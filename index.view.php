@@ -1,6 +1,6 @@
 <?php
     include_once "src\database.php";
-    include_once "class\data.class.php";
+    include_once "class\DAO.class.php";
     include_once "Mandat1.php";
 
     $conn = connect_db();
@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <!--Par Thanh Nam Nguyen-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

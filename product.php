@@ -1,5 +1,17 @@
+<?php
+    include_once "src\database.php";
+    include_once "class\DAO.class.php";
+    include_once "Mandat1.php";
+
+    $sku = $_GET['sku'];
+
+    $conn = connect_db();
+    $data = new Data($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
+<!--Par Thanh Nam Nguyen-->
 
 <head>
     <meta charset="UTF-8">
@@ -16,7 +28,7 @@
     </header>
 
     <nav class="nav">
-        <a class="active" href="index.php">Produits</a>
+        <a href="index.php">Produits</a>
         <a href="cart.php">Panier</a>
         <a href="createAccount.php">Créer un compte</a>
         <a href="connection.php">Se connecter</a>
@@ -24,7 +36,7 @@
 
     <main>
         <section class="product-detail">
-            <img class="image" src="img/AW632147.png" alt="Tuque rouge">
+        <img class="image" src="img/<?php echo $sku; ?>.png" alt="Tuque rouge">
 
             <h1 class="name">Tuque rouge</h1>
             <div class="description" v="">Tuque rouge vif. Style décontracté et abordable.</div>
@@ -43,3 +55,4 @@
 </body>
 
 </html>
+<?php $conn = null; ?>
