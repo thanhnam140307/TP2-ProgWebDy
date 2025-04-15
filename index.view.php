@@ -1,3 +1,11 @@
+<?php
+    include_once "src\database.php";
+    include_once "Mandat1.php";
+
+    $conn = connect_db();
+    $nombreDeProduit = compterNombreDeProduit($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -82,3 +90,4 @@
 </body>
 
 </html>
+<?php $conn = null; ?>Modifier database.php et ajouts de Mandat1.php
