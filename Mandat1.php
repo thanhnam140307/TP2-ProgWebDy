@@ -1,26 +1,23 @@
 <?php declare(strict_types=1);
-
-function compterNombreDeProduit($conn) {
-    $requete = $conn->prepare('SELECT COUNT(*) FROM product'); 
-    $requete->execute();
-
-    return $requete->fetchColumn();
+//Par Thanh Nam Nguyen
+function selectListeComplet($conn) {
+    $listeComplet = $conn->prepare('SELECT * FROM product'); 
+    $listeComplet->execute();
+    $listeProduit = $listeComplet->fetchAll();
+    $listeComplet->closeCursor();
+    
+    return $listeProduit;
 }
 
-function recupererDonne($conn, $champs){
-    $requete = $conn->prepare('SELECT' .$champs. 'FROM product'); 
-
-}
-
-function afficherProduit() {
-    echo 
-    '
-    <a class="product" href="#">
-        <img class="image" src="img/AW124876.png" alt="Foulard polaire">
-        <div class="name">Foulard polaire</div>
-        <div class="price">24.99 $</div>
-    </a>
-    ';
+function afficherProduit($liste) {
+    foreach($liste as $produits) {
+        echo 
+        '<a class="product" href="#">
+            <img class="image" src="img/'.$produits['sku'].'.png" alt="'.$produits['name'].'">
+            <div class="name">'.$produits['name'].'</div>
+            <div class="price">'.$produits['price'].' $</div>
+        </a>';
+    }
 }
 
 ?>
