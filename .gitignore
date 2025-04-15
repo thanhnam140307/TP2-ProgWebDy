@@ -1,0 +1,8 @@
+# IntelliJ Idea
+.idea/
+
+# Composer
+vendor/
+
+# PHp Unit
+.phpunit.result.cache

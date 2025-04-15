@@ -1,0 +1,375 @@
+/* Resets */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    font: 16px sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    container-type: size;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-block: 0 0.5em;
+    text-wrap: balance;
+}
+
+p {
+    text-wrap: pretty;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+input, button, textarea, select, label, legend {
+    display: block;
+    font: inherit;
+}
+
+/* Base styles */
+
+@font-face {
+    font-family: Inter;
+    src: url(../fonts/Inter.ttf);
+}
+
+body {
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    font: 16px Inter, sans-serif;
+
+    --color-bg: #ddd;
+    --color-bg-hover: #bbb;
+    --color-bg-active: #ccc;
+    --color-bg-muted: #eee;
+    --color-bg-danger: #ffbccc;
+    --color-border: #ddd;
+    --color-border-hover: #aaa;
+    --color-text-link: #002ec5;
+    --color-text-muted: #aaa;
+
+    --border-radius: 5px;
+}
+
+main {
+    flex: 1;
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+
+    background: var(--color-bg);
+
+    a {
+        padding: 1rem;
+
+        display: flex;
+        align-items: center;
+
+        font-weight: 500;
+        color: inherit;
+        text-align: center;
+        text-decoration: none;
+        vertical-align: center;
+
+        transition: background 250ms;
+
+        &.active {
+            background: var(--color-bg-active);
+        }
+
+        &:hover {
+            background: var(--color-bg-hover);
+        }
+    }
+}
+
+input {
+    padding: 0.5rem;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+}
+
+button,
+.button {
+    padding: 0.5rem 1rem;
+
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+
+    color: inherit;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: background 250ms;
+
+    &:hover {
+        background: var(--color-bg-hover);
+    }
+
+    &.hyperlink {
+        padding: 0;
+        
+        background: 0;
+        border: none;
+        border-radius: 0;
+
+        text-decoration: underline;
+        color: var(--color-text-link);
+    }
+}
+
+/* All pages */
+
+.header {
+    padding: 1rem;
+    text-align: center;
+
+    .brand {
+        display: inline-block;
+    }
+}
+
+.footer {
+    padding: 2rem;
+    text-align: center;
+}
+
+/* index.php */
+
+.product-grid {
+    --product-width: 200px;
+    --product-height: 200px;
+
+    margin: 1rem;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--product-width), 1fr));
+    gap: 1rem;
+
+    .product {
+        color: inherit;
+        text-decoration: none;
+
+        display: block;
+
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius);
+        overflow: clip;
+
+        transition: border-color 250ms;
+
+        &:hover {
+            border-color: var(--color-border-hover);
+        }
+        
+        .image {
+            width: 100%;
+            height: var(--product-height);
+            padding: 1rem;
+
+            object-fit: contain;
+
+            background: var(--color-bg-muted);
+        }
+
+        .name {
+            margin: 0.5rem;
+            font-weight: 500;
+        }
+
+        .price {
+            margin: 0.5rem;
+            color: var(--color-text-muted);
+        }
+    }
+}
+
+/* product.php */
+
+.product-detail {
+    display: grid;
+    gap: 1rem;
+
+    .image {
+        width: 100%;
+        padding: 1rem;
+        
+        object-fit: contain;
+        background: var(--color-bg-muted);
+    }
+
+    .name {
+        margin: 0 1rem;
+    }
+
+    .description {
+        margin: 0 1rem;
+    }
+
+    .price {
+        margin: 0 1rem;
+        color: var(--color-text-muted);
+    }
+
+    form {
+        margin: 0 1rem;
+
+        display: flex;
+        gap: 1rem;
+
+        .quantity {
+            width: 100px;
+        }
+    }
+}
+
+@container(width > 800px) {
+    .product-detail {
+        margin: 1rem;
+
+        grid-template-columns: 400px 400px;
+        grid-template-rows: auto auto auto 1fr;
+        align-items: start;
+        justify-content: center;
+
+        .image {
+            grid-row: span 4;
+        }
+
+        .name,
+        .description,
+        .price,
+        form {
+            margin: 0;
+        }
+    }
+}
+
+/* cart.php */
+
+.product-list {
+    --product-width: 100px;
+    --product-height: 100px;
+
+    margin: 1rem;
+    display: grid;
+    gap: 1rem;
+
+    .product {
+        display: grid;
+        grid-template-columns: var(--product-width) auto 1fr;
+        grid-template-rows: auto auto 1fr;
+        justify-items: start;
+        align-items: center;
+        gap: 0.5rem;
+
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius);
+        overflow: clip;
+
+        transition: border-color 250ms;
+
+        &:hover {
+            border-color: var(--color-border-hover);
+        }
+        
+        .image {
+            width: 100%;
+            height: var(--product-height);
+            padding: 1rem;
+
+            grid-row: span 3;
+
+            object-fit: contain;
+
+            background: var(--color-bg-muted);
+        }
+
+        .name {
+            margin-block-start: 0.5rem;
+            grid-column: span 2;
+
+            font-weight: 500;
+        }
+
+        .price {
+            grid-column: span 2;
+            
+            color: var(--color-text-muted);
+        }
+    }
+}
+
+.cart-empty {
+    margin: 1rem;
+}
+
+.cart-total {
+    margin: 1rem;
+
+    display: flex;
+    justify-content: end;
+
+    font-size: 1.5rem;
+}
+
+.cart-checkout {
+    margin: 1rem;
+    
+    display: flex;
+    justify-content: end;
+}
+
+/* sign-in.php, sign-up.php */
+
+.form {
+    margin: 1rem;
+
+    display: grid;
+    gap: 1rem;
+
+    .title {
+        margin: 0;
+    }
+
+    .error-list {
+        margin: 0;
+    }
+}
+
+@container(width > 800px) {
+    .form {
+        padding: 1rem;
+
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius);
+    }
+}
+
+.error-list {
+    margin: 1rem;
+    padding: 1rem;
+    padding-inline-start: 2rem;
+
+    background: var(--color-bg-danger);
+    border-radius: var(--border-radius);
+}
