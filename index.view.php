@@ -31,7 +31,7 @@
 
     <main>
         <section class="product-grid">
-            <?php afficherProduit(selectListeComplet($conn)); ?>
+            <?php showProducts(selectCompleteList($conn)); ?>
         </section>
     </main>
     <footer class="footer">

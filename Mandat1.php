@@ -1,21 +1,21 @@
 <?php declare(strict_types=1);
 //Par Thanh Nam Nguyen
-function selectListeComplet($conn) {
-    $listeComplet = $conn->prepare('SELECT * FROM product'); 
-    $listeComplet->execute();
-    $listeProduit = $listeComplet->fetchAll();
-    $listeComplet->closeCursor();
+function selectCompleteList($conn) {
+    $completeList = $conn->prepare('SELECT * FROM product'); 
+    $completeList->execute();
+    $productList = $completeList->fetchAll();
+    $completeList->closeCursor();
     
-    return $listeProduit;
+    return $productList;
 }
 
-function afficherProduit($liste) {
-    foreach($liste as $produits) {
+function showProducts($list) {
+    foreach($list as $product) {
         echo 
         '<a class="product" href="#">
-            <img class="image" src="img/'.$produits['sku'].'.png" alt="'.$produits['name'].'">
-            <div class="name">'.$produits['name'].'</div>
-            <div class="price">'.$produits['price'].' $</div>
+            <img class="image" src="img/'.$product['sku'].'.png" alt="'.$product['name'].'">
+            <div class="name">'.$product['name'].'</div>
+            <div class="price">'.$product['price'].' $</div>
         </a>';
     }
 }
