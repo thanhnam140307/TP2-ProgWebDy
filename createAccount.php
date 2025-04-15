@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <title>Connection</title>
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
@@ -16,8 +16,8 @@
     <nav class="nav">
         <a href="index.php">Produits</a>
         <a href="cart.php">Panier</a>
-        <a href="createAccount.php">Créer un compte</a>
-        <a  class="active" href="connection.php">Se connecter</a>
+        <a class="active" href="createAccount.php">Créer un compte</a>
+        <a href="connection.php">Se connecter</a>
     </nav>
 </body>
 </html>

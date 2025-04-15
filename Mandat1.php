@@ -4,7 +4,7 @@
 function showProducts($list) {
     foreach($list as $product) {
         echo 
-        '<a class="product" href="#">
+        '<a class="product" href="product.php?sku='.$product['sku'].'">
             <img class="image" src="img/'.$product['sku'].'.png" alt="'.$product['name'].'">
             <div class="name">'.$product['name'].'</div>
             <div class="price">'.$product['price'].' $</div>

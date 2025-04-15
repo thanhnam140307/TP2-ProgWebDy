@@ -1,19 +1,10 @@
-<?php
-    include_once "src\database.php";
-    include_once "class\data.class.php";
-    include_once "Mandat1.php";
-
-    $conn = connect_db();
-    $data = new Data($conn);
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
-<!--Par Thanh Nam Nguyen-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Baie Ourson</title>
+    <title>Produit</title>
     <link rel="stylesheet" href="css/app.css">
 </head>
 
@@ -32,8 +23,17 @@
     </nav>
 
     <main>
-        <section class="product-grid">
-            <?php showProducts($data->selectCompleteList()); ?>
+        <section class="product-detail">
+            <img class="image" src="img/AW632147.png" alt="Tuque rouge">
+
+            <h1 class="name">Tuque rouge</h1>
+            <div class="description" v="">Tuque rouge vif. Style décontracté et abordable.</div>
+            <div class="price">5.99 $ - 5 restants.</div>
+
+            <form method="post">
+                <input class="quantity" name="quantity" type="number" value="1" min="1">
+                <button>Ajouter au panier</button>
+            </form>
         </section>
     </main>
 
@@ -43,4 +43,3 @@
 </body>
 
 </html>
-<?php $conn = null; ?>
