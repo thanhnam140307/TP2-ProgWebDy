@@ -1,8 +1,10 @@
 <?php
     include_once "src\database.php";
+    include_once "class\data.class.php";
     include_once "Mandat1.php";
 
     $conn = connect_db();
+    $data = new Data($conn);
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +33,7 @@
 
     <main>
         <section class="product-grid">
-            <?php showProducts(selectCompleteList($conn)); ?>
+            <?php showProducts($data->selectCompleteList()); ?>
         </section>
     </main>
     <footer class="footer">

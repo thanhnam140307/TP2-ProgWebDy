@@ -1,13 +1,5 @@
 <?php declare(strict_types=1);
 //Par Thanh Nam Nguyen
-function selectCompleteList($conn) {
-    $completeList = $conn->prepare('SELECT * FROM product'); 
-    $completeList->execute();
-    $productList = $completeList->fetchAll();
-    $completeList->closeCursor();
-    
-    return $productList;
-}
 
 function showProducts($list) {
     foreach($list as $product) {
