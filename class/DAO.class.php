@@ -18,6 +18,14 @@ class Data {
         return $productList;
     }
 
-    
+    public function getColumn(string $sku, string $attribute) : string {
+        $request = $this->pdo->prepare("SELECT ".$attribute." FROM product WHERE sku = :Sku");
+        $request->bindValue(':Sku', $sku, PDO::PARAM_STR);
+        $request->execute();
+        $column = $request->fetchColumn();
+        $request->closeCursor();
+
+        return (string)$column;
+    }
 }
 ?>
