@@ -1,16 +1,15 @@
 <?php
     include_once "src\database.php";
-    include_once "class\DAO.class.php";
+    include_once "class\ProductDAO.class.php";
     include_once "Mandat1.php";
 
     if (isset($_GET['sku']))
         $sku = $_GET['sku'];
 
     $conn = connect_db();
-    $data = new Data($conn);
+    $product = new Product($conn);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantity'])) {
-        $data->insertOrder($orderID, $sku, $_POST['quantity']);
     }
 ?>
 
@@ -43,15 +42,15 @@
         <section class="product-detail">
             <img class="image" src="img/<?php echo $sku; ?>.png" alt="Tuque rouge">
 
-            <h1 class="name"><?php echo $data->getColumn($sku, "name") ?></h1>
-            <div class="description" v=""><?php echo $data->getColumn($sku, "description") ?></div>
+            <h1 class="name"><?php echo $product->getColumnFromProduct($sku, "name") ?></h1>
+            <div class="description" v=""><?php echo $product->getColumnFromProduct($sku, "description") ?></div>
             <div class="price">
-                <?php echo $data->getColumn($sku, "price")." $ - " .$data->getColumn($sku, "stock"). " restant(s)."?>
+                <?php echo $product->getColumnFromProduct($sku, "price")." $ - " .$product->getColumnFromProduct($sku, "stock"). " restant(s)."?>
             </div>
 
             <form method="post">
                 <input class="quantity" name="quantity" type="number" value="1" min="1"
-                    max="<?php echo $data->getColumn($sku, "stock") ?>">
+                    max="<?php echo $product->getColumnFromProduct($sku, "stock") ?>">
                 <button>Ajouter au panier</button>
             </form>
         </section>

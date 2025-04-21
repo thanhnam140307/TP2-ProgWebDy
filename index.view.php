@@ -1,10 +1,10 @@
 <?php
     include_once "src\database.php";
-    include_once "class\DAO.class.php";
+    include_once "class\ProductDAO.class.php";
     include_once "Mandat1.php";
 
     $conn = connect_db();
-    $data = new Data($conn);
+    $product = new Product($conn);
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +34,7 @@
 
     <main>
         <section class="product-grid">
-            <?php showProducts($data->selectCompleteList()); ?>
+            <?php showProducts($product->selectableProduct()); ?>
         </section>
     </main>
 

@@ -1,7 +1,8 @@
 <?php
+//Par Thanh Nam Nguyen
 declare(strict_types=1);
 
-class Data {
+class Product {
 
     private $pdo;
 
@@ -9,7 +10,8 @@ class Data {
 		$this->pdo = $conn; 
 	} 
 
-    public function selectCompleteList() : array{
+    //Par Thanh Nam Nguyen
+    public function selectableProduct() : array{
         $completeList = $this->pdo->prepare('SELECT * FROM product'); 
         $completeList->execute();
         $productList = $completeList->fetchAll();
@@ -18,7 +20,8 @@ class Data {
         return $productList;
     }
 
-    public function getColumn(string $sku, string $attribute) : string {
+    //Par Thanh Nam Nguyen
+    public function getColumnFromProduct(string $sku, string $attribute) : string {
         $request = $this->pdo->prepare("SELECT ".$attribute." FROM product WHERE sku = :Sku");
         $request->bindValue(':Sku', $sku, PDO::PARAM_STR);
         $request->execute();
@@ -26,15 +29,6 @@ class Data {
         $request->closeCursor();
 
         return (string)$column;
-    }
-
-    public function insertOrder(string $orderID, string $sku, string $quantity) : void {
-        $requete = $this->pdo->prepare('INSERT INTO order_item(order_id, product_sku, quantity) VALUES(:OrderID, :Sku, :Quantity)');
-        $requete->bindValue(':OrderID', (int)$orderID, PDO::PARAM_INT);
-        $requete->bindValue(':Sku', $sku, PDO::PARAM_STR);
-        $requete->bindValue(':Quantity', (int)$quantity, PDO::PARAM_INT);
-        $requete->execute();
-        $requete->closeCursor();
     }
 }
 ?>
