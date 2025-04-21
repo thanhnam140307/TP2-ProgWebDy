@@ -8,6 +8,10 @@
 
     $conn = connect_db();
     $data = new Data($conn);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantity'])) {
+        $data->insertOrder($orderID, $sku, $_POST['quantity']);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +48,7 @@
             <div class="price">
                 <?php echo $data->getColumn($sku, "price")." $ - " .$data->getColumn($sku, "stock"). " restant(s)."?>
             </div>
-            
+
             <form method="post">
                 <input class="quantity" name="quantity" type="number" value="1" min="1"
                     max="<?php echo $data->getColumn($sku, "stock") ?>">

@@ -27,5 +27,14 @@ class Data {
 
         return (string)$column;
     }
+
+    public function insertOrder(string $orderID, string $sku, string $quantity) : void {
+        $requete = $this->pdo->prepare('INSERT INTO order_item(order_id, product_sku, quantity) VALUES(:OrderID, :Sku, :Quantity)');
+        $requete->bindValue(':OrderID', (int)$orderID, PDO::PARAM_INT);
+        $requete->bindValue(':Sku', $sku, PDO::PARAM_STR);
+        $requete->bindValue(':Quantity', (int)$quantity, PDO::PARAM_INT);
+        $requete->execute();
+        $requete->closeCursor();
+    }
 }
 ?>
