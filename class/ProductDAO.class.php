@@ -11,7 +11,7 @@ class Product {
 	} 
 
     //Par Thanh Nam Nguyen
-    public function selectableProduct() : array{
+    public function selectableProduct() : array {
         $completeList = $this->pdo->prepare('SELECT * FROM product'); 
         $completeList->execute();
         $productList = $completeList->fetchAll();

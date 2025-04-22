@@ -45,7 +45,7 @@
             <h1 class="name"><?php echo $product->getColumnFromProduct($sku, "name") ?></h1>
             <div class="description" v=""><?php echo $product->getColumnFromProduct($sku, "description") ?></div>
             <div class="price">
-                <?php echo $product->getColumnFromProduct($sku, "price")." $ - " .$product->getColumnFromProduct($sku, "stock"). " restant(s)."?>
+                <?php echo $product->getColumnFromProduct($sku, "price") . " $ - " . $product->getColumnFromProduct($sku, "stock") . " restant(s)." ?>
             </div>
 
             <form method="post">
