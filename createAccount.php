@@ -1,4 +1,5 @@
 <?php
+session_start();
     include_once "class\UserDTO.class.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -21,8 +22,12 @@
         if ($isEmailEmpty || $isPasswordEmpty || $isConfirmPasswordEmpty || !$isValideEmail || !$isValidePassword || !$isValideConfirmPassword)
             $error = true;
 
+        $_SESSION['email'] = $email;
+        $_SESSION['password'] = $password;
+        $_SESSION['confirmPassword'] = $confirmPassword;
+
         header('HTTP/1.1 303 See Other');
-        header('Location: createAccount.php?error='.$error.'&emailEmpty=' .$isEmailEmpty.
+        header('Location: createAccount.php?submited=true&error='.$error.'&emailEmpty=' .$isEmailEmpty.
         '&passwordEmpty=' .$isPasswordEmpty.
         '&confirmPasswordEmpty=' .$isConfirmPasswordEmpty.
         '&valideEmail=' .$isValideEmail.
@@ -63,26 +68,29 @@
             <h1 class="title">Créer mon compte Ourson</h1>
 
             <?php
-                if (isset($_GET['error']) && $_GET['error']) {
+                if (isset($_GET['submited']) && $_GET['error']) {
                     echo "<ul class=\"error-list\">";
                         if ($_GET['emailEmpty']) echo "<li>L'adresse courrier est obligatoire.</li>";
                         if (!$_GET['valideEmail']) echo "<li>L'adresse courrier n'est pas valide.</li>";
                         if ($_GET['passwordEmpty']) echo "<li>Le mot de passe est obligatoire.</li>";                        
                         if (!$_GET['validePassword']) echo "<li>Le mot de passe doit avoir au moin 8 caractères.</li>";
                         if ($_GET['confirmPasswordEmpty']) echo "<li>La confirmation du mot de passe est obligatoire.</li>";
-                        if (!$_GET['valideConfirmPassword']) echo "<li>La confirmation du mot de passe n'est pas égale au mot de passe.</li>";
+                        if (!$_GET['confirmPasswordEmpty'] && !$_GET['valideConfirmPassword']) echo "<li>La confirmation du mot de passe n'est pas égale au mot de passe.</li>";
                     echo "</ul>";
                 };
             ?>
 
             <label for="email">Adresse courrier :</label>
-            <input id="email" type="text" name="email">
+            <input id="email" type="text" name="email" value="<?php if (isset($_GET['submited'], $_SESSION['email']) && !$_GET['emailEmpty'] && $_GET['valideEmail']) 
+            echo htmlspecialchars($_SESSION['email']);?>">
 
             <label for="password">Mot de passe :</label>
-            <input id="password" type="password" name="password">
+            <input id="password" type="password" name="password" value="<?php if (isset($_GET['submited'], $_SESSION['password']) && !$_GET['passwordEmpty'] && $_GET['validePassword']) 
+            echo htmlspecialchars($_SESSION['password']);?>">
 
             <label for="confirmPassword">Confirmation du mot de passe :</label>
-            <input id="confirmPassword" type="password" name="confirmPassword">
+            <input id="confirmPassword" type="password" name="confirmPassword" value="<?php if (isset($_GET['submited'], $_SESSION['password']) && !$_GET['passwordEmpty'] && $_GET['validePassword']) 
+            echo htmlspecialchars($_SESSION['confirmPassword']);?>">
 
             <button>Envoyer</button>
         </form>
