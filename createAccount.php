@@ -1,9 +1,15 @@
 <?php
+    include_once "src\database.php";
     include_once "class\UserDTO.class.php";
+    include_once "class\UserDAO.class.php";
     include_once "Mandat1.php";
 
+    $conn = connect_db();
+    $userDAO = new UserDAO($conn);
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        validateAccount();
+        $userDTO = new UserDTO(htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']), htmlspecialchars($_POST['confirmPassword']));
+        validateAccount(false, false, $userDTO, $userDAO);
     }
 ?>
 
@@ -36,7 +42,10 @@
         <form class="form" method="POST">
             <h1 class="title">Créer mon compte Ourson</h1>
 
-            <?php writeErrors(); ?>
+            <?php 
+                writeErrors();
+                insert($userDAO);
+            ?>
 
             <label for="email">Adresse courrier :</label>
             <input id="email" type="text" name="email"
@@ -56,3 +65,4 @@
 </body>
 
 </html>
+<?php $conn = null; ?>

@@ -25,7 +25,7 @@ class UserDTO
         $regex = '';
 
         if ($inputType == "email") {
-            $regex = '/^[\w.]{1,}@[a-z]{2,}.[a-z]{2,}$/';
+            $regex = '/^[\w.]{1,}@[a-z]{2,}+.[a-z]{2,}$/';
             $input = $this->email;
         }
 

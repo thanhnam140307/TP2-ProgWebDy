@@ -21,8 +21,8 @@ class Product {
     }
 
     //Par Thanh Nam Nguyen
-    public function getColumnFromProduct(string $sku, string $attribute) : string {
-        $request = $this->pdo->prepare("SELECT ".$attribute." FROM product WHERE sku = :Sku");
+    public function getColumnFromProduct(string $sku, string $column) : string {
+        $request = $this->pdo->prepare("SELECT ".$column." FROM product WHERE sku = :Sku");
         $request->bindValue(':Sku', $sku, PDO::PARAM_STR);
         $request->execute();
         $column = $request->fetchColumn();

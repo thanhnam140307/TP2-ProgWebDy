@@ -15,12 +15,7 @@ function showProducts($list) {
     }
 }
 
-function validateAccount() {
-    $hasError = false;
-
-    //Créer userDTO
-    $userDTO = new UserDTO(htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']), htmlspecialchars($_POST['confirmPassword']));
-
+function validateAccount($hasError, $isPresent, $userDTO, $userDAO) {
     //Valider
     $isEmailEmpty = $userDTO->isEmpty($userDTO->email);
     $isPasswordEmpty = $userDTO->isEmpty($userDTO->password);
@@ -34,23 +29,28 @@ function validateAccount() {
     if ($isEmailEmpty || $isPasswordEmpty || $isConfirmPasswordEmpty || !$isValidEmail || !$isValidPassword || !$isValidConfirmPassword)
         $hasError = true;
 
+    if ($userDAO->isEmailPresent($userDTO->email))
+        $isPresent = true;
+    
     //Créer les sessions
     createSession($userDTO->email, $userDTO->password, $userDTO->confirmPassword);
     
     //PRG
-    navigate($hasError, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword);
+    navigate($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword);
 }
 
-function createSession($email, $password, $confirmPassword){
+function createSession($email, $password, $confirmPassword) {
     $_SESSION['email'] = $email;
     $_SESSION['password'] = $password;
     $_SESSION['confirmPassword'] = $confirmPassword;
 }
 
-function navigate($hasError, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword) {
+function navigate($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword) {
     header('HTTP/1.1 303 See Other');
     header(
-        'Location: createAccount.php?submited=true&hasError=' . $hasError . '&emailEmpty=' . $isEmailEmpty .
+        'Location: createAccount.php?submited&isPresent=' . $isPresent . 
+        '&hasError=' . $hasError . 
+        '&emailEmpty=' . $isEmailEmpty .
         '&passwordEmpty=' . $isPasswordEmpty .
         '&confirmPasswordEmpty=' . $isConfirmPasswordEmpty .
         '&validEmail=' . $isValidEmail .
@@ -62,16 +62,31 @@ function navigate($hasError, $isEmailEmpty, $isPasswordEmpty, $isConfirmPassword
 }
 
 function writeErrors() {
-    if (isset($_GET['submited']) && $_GET['hasError']) {
-        echo "<ul class=\"error-list\">";
-            if ($_GET['emailEmpty']) echo "<li>L'adresse courrier est obligatoire.</li>";
-            if (!$_GET['validEmail']) echo "<li>L'adresse courrier n'est pas valide.</li>";
-            if ($_GET['passwordEmpty']) echo "<li>Le mot de passe est obligatoire.</li>";                        
-            if (!$_GET['validPassword']) echo "<li>Le mot de passe doit avoir au moin 8 caractères.</li>";
-            if ($_GET['confirmPasswordEmpty']) echo "<li>La confirmation du mot de passe est obligatoire.</li>";
-            if (!$_GET['confirmPasswordEmpty'] && !$_GET['validConfirmPassword']) echo "<li>La confirmation du mot de passe n'est pas égale au mot de passe.</li>";
-        echo "</ul>";
-    };
+    if (isset($_GET['submited'])) {
+
+        if ($_GET['hasError']) {
+            echo "<ul class=\"error-list\">";
+                if ($_GET['emailEmpty']) echo "<li>L'adresse courrier est obligatoire.</li>";
+                if (!$_GET['validEmail']) echo "<li>L'adresse courrier n'est pas valide.</li>";
+                if ($_GET['passwordEmpty']) echo "<li>Le mot de passe est obligatoire.</li>";                        
+                if (!$_GET['validPassword']) echo "<li>Le mot de passe doit avoir au moin 8 caractères.</li>";
+                if ($_GET['confirmPasswordEmpty']) echo "<li>La confirmation du mot de passe est obligatoire.</li>";
+                if (!$_GET['confirmPasswordEmpty'] && !$_GET['validConfirmPassword']) echo "<li>La confirmation du mot de passe n'est pas égale au mot de passe.</li>";
+            echo "</ul>";
+        }
+
+        if ($_GET['isPresent'] && !$_GET['hasError']) {
+            echo 
+            "<ul class=\"error-list\">
+                <li>Le courrier est déjà présent.</li>
+            </ul>";
+        }
+    }
+}
+
+function insert($userDAO) {
+    if (isset($_GET['submited']) && !$_GET['hasError'] && !$_GET['isPresent'])
+        $userDAO->insertUser($_SESSION['email'], $_SESSION['password']);
 }
 
 function keepValidField($sessionName, $getEmpty, $getValid) {
