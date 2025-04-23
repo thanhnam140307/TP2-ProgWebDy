@@ -71,7 +71,7 @@ function writeErrors() {
                 if ($_GET['passwordEmpty']) echo "<li>Le mot de passe est obligatoire.</li>";                        
                 if (!$_GET['validPassword']) echo "<li>Le mot de passe doit avoir au moin 8 caractères.</li>";
                 if ($_GET['confirmPasswordEmpty']) echo "<li>La confirmation du mot de passe est obligatoire.</li>";
-                if (!$_GET['confirmPasswordEmpty'] && !$_GET['validConfirmPassword']) echo "<li>La confirmation du mot de passe n'est pas égale au mot de passe.</li>";
+                if (!$_GET['confirmPasswordEmpty'] && !$_GET['validConfirmPassword'] && !$_GET['passwordEmpty'] && $_GET['validPassword']) echo "<li>La confirmation du mot de passe n'est pas égale au mot de passe.</li>";
             echo "</ul>";
         }
 
