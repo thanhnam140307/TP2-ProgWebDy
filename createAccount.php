@@ -1,40 +1,9 @@
 <?php
-session_start();
     include_once "class\UserDTO.class.php";
+    include_once "Mandat1.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        
-        $error = false;
-        $email = htmlspecialchars($_POST['email']);
-        $password = htmlspecialchars($_POST['password']);
-        $confirmPassword = htmlspecialchars($_POST['confirmPassword']);
-        
-        $userDTO = new UserDTO($email, $password, $confirmPassword);
-
-        $isEmailEmpty = $userDTO->isEmpty($email);
-        $isPasswordEmpty = $userDTO->isEmpty($password);
-        $isConfirmPasswordEmpty = $userDTO->isEmpty($confirmPassword);
-
-        $isValideEmail = $userDTO->isEqualToRegex("email");
-        $isValidePassword = $userDTO->isEqualToRegex("password");
-        $isValideConfirmPassword = $userDTO->isConfirmPasswordCorrect();
-
-        if ($isEmailEmpty || $isPasswordEmpty || $isConfirmPasswordEmpty || !$isValideEmail || !$isValidePassword || !$isValideConfirmPassword)
-            $error = true;
-
-        $_SESSION['email'] = $email;
-        $_SESSION['password'] = $password;
-        $_SESSION['confirmPassword'] = $confirmPassword;
-
-        header('HTTP/1.1 303 See Other');
-        header('Location: createAccount.php?submited=true&error='.$error.'&emailEmpty=' .$isEmailEmpty.
-        '&passwordEmpty=' .$isPasswordEmpty.
-        '&confirmPasswordEmpty=' .$isConfirmPasswordEmpty.
-        '&valideEmail=' .$isValideEmail.
-        '&validePassword=' .$isValidePassword.
-        '&valideConfirmPassword=' .$isValideConfirmPassword);
-        
-        exit();
+        validateAccount();
     }
 ?>
 
@@ -67,30 +36,19 @@ session_start();
         <form class="form" method="POST">
             <h1 class="title">Créer mon compte Ourson</h1>
 
-            <?php
-                if (isset($_GET['submited']) && $_GET['error']) {
-                    echo "<ul class=\"error-list\">";
-                        if ($_GET['emailEmpty']) echo "<li>L'adresse courrier est obligatoire.</li>";
-                        if (!$_GET['valideEmail']) echo "<li>L'adresse courrier n'est pas valide.</li>";
-                        if ($_GET['passwordEmpty']) echo "<li>Le mot de passe est obligatoire.</li>";                        
-                        if (!$_GET['validePassword']) echo "<li>Le mot de passe doit avoir au moin 8 caractères.</li>";
-                        if ($_GET['confirmPasswordEmpty']) echo "<li>La confirmation du mot de passe est obligatoire.</li>";
-                        if (!$_GET['confirmPasswordEmpty'] && !$_GET['valideConfirmPassword']) echo "<li>La confirmation du mot de passe n'est pas égale au mot de passe.</li>";
-                    echo "</ul>";
-                };
-            ?>
+            <?php writeErrors(); ?>
 
             <label for="email">Adresse courrier :</label>
-            <input id="email" type="text" name="email" value="<?php if (isset($_GET['submited'], $_SESSION['email']) && !$_GET['emailEmpty'] && $_GET['valideEmail']) 
-            echo htmlspecialchars($_SESSION['email']);?>">
+            <input id="email" type="text" name="email"
+                value="<?php keepValidField('email', 'emailEmpty', 'validEmail'); ?>">
 
             <label for="password">Mot de passe :</label>
-            <input id="password" type="password" name="password" value="<?php if (isset($_GET['submited'], $_SESSION['password']) && !$_GET['passwordEmpty'] && $_GET['validePassword']) 
-            echo htmlspecialchars($_SESSION['password']);?>">
+            <input id="password" type="password" name="password"
+                value="<?php keepValidField('password', 'passwordEmpty', 'validPassword'); ?>">
 
             <label for="confirmPassword">Confirmation du mot de passe :</label>
-            <input id="confirmPassword" type="password" name="confirmPassword" value="<?php if (isset($_GET['submited'], $_SESSION['password']) && !$_GET['passwordEmpty'] && $_GET['validePassword']) 
-            echo htmlspecialchars($_SESSION['confirmPassword']);?>">
+            <input id="confirmPassword" type="password" name="confirmPassword"
+                value="<?php keepValidField('confirmPassword', 'confirmPasswordEmpty', 'validConfirmPassword'); ?>">
 
             <button>Envoyer</button>
         </form>
