@@ -10,20 +10,21 @@ class Order {
 		$this->pdo = $conn; 
 	} 
 
-    public function insertUserId(string $userId) : void {
-        $requete = $this->pdo->prepare('INSERT INTO `order` (user_id) VALUES(:UserId)');
-        $requete->bindValue(':UserId', (int)$userId, PDO::PARAM_INT);
-        $requete->execute();
-        $requete->closeCursor();
+    public function insertUserId(int $userId) : void {
+        $request = $this->pdo->prepare('INSERT INTO `order` (user_id) VALUES(:UserId)');
+        $request->bindValue(':UserId', $userId, PDO::PARAM_INT);
+        $request->execute();
+        $request->closeCursor();
     }
 
-    public function getOrderID() : string {
-        $request = $this->pdo->prepare("SELECT id FROM order");
+    public function getOrderId(int $userId) : int {
+        $request = $this->pdo->prepare("SELECT id FROM `order` WHERE user_id = :UserId and creation_date = NOW()");
+        $request->bindValue(':UserId', $userId, PDO::PARAM_INT);
         $request->execute();
         $id = $request->fetchColumn();
         $request->closeCursor();
 
-        return (string)$id;
+        return $id;
     }
 }
 ?>

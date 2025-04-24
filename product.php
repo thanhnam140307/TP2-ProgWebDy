@@ -1,15 +1,43 @@
 <?php
     include_once "src\database.php";
     include_once "class\ProductDAO.class.php";
+    include_once "class\UserDAO.class.php";
+    include_once "class\OrderDAO.class.php";
+    include_once "class\OrderItemDAO.class.php";
     include_once "Mandat1.php";
 
     if (isset($_GET['sku']))
         $sku = $_GET['sku'];
 
+    else {
+        header('Location: index.php');
+        exit();
+    }
+
     $conn = connect_db();
     $product = new Product($conn);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantity'])) {
+    $name = $product->getColumnFromProduct($sku, "name");
+    $description = $product->getColumnFromProduct($sku, "description");
+    $price = $product->getColumnFromProduct($sku, "price");
+    $stock = $product->getColumnFromProduct($sku, "stock");
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        if (isset($_SESSION['email']) && $_POST["quantity"] > 0) {
+
+            $userDAO = new UserDAO($conn);
+            $order = new Order($conn);
+            $orderItem = new OrderItem($conn);
+
+            $userId = $userDAO->getUserId($_SESSION['email']);
+            $order->insertUserId($userId);
+            $orderId = $order->getOrderId($userId); 
+            $orderItem->insertOrderItem($orderId, $sku, $_POST["quantity"]);
+
+            header('Location: cart.php');
+            exit();
+        }
     }
 ?>
 
@@ -42,15 +70,14 @@
         <section class="product-detail">
             <img class="image" src="img/<?php echo $sku; ?>.png" alt="Tuque rouge">
 
-            <h1 class="name"><?php echo $product->getColumnFromProduct($sku, "name") ?></h1>
-            <div class="description" v=""><?php echo $product->getColumnFromProduct($sku, "description") ?></div>
+            <h1 class="name"><?php echo $name ?></h1>
+            <div class="description" v=""><?php echo $description ?></div>
             <div class="price">
-                <?php echo $product->getColumnFromProduct($sku, "price") . " $ - " . $product->getColumnFromProduct($sku, "stock") . " restant(s)." ?>
+                <?php echo $price . " $ - " . $stock . " restant(s)." ?>
             </div>
 
             <form method="post">
-                <input class="quantity" name="quantity" type="number" value="1" min="1"
-                    max="<?php echo $product->getColumnFromProduct($sku, "stock") ?>">
+                <input class="quantity" name="quantity" type="number" value="<?php if ($stock == "0") echo "0"; else echo "1" ?>" min="<?php if ($stock == "0") echo "0"; else echo "1" ?>" max="<?php echo $stock ?>">
                 <button>Ajouter au panier</button>
             </form>
         </section>

@@ -27,12 +27,22 @@ class UserDAO
 
     //Par Thanh Nam Nguyen
     public function isEmailPresent(string $email) : bool {
-        $requete = $this->pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :Email");
-        $requete->bindValue(':Email', $email, PDO::PARAM_STR);
-        $requete->execute();
-        $estPresent = $requete->fetchColumn() > 0;
-        $requete->closeCursor();
+        $request = $this->pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :Email");
+        $request->bindValue(':Email', $email, PDO::PARAM_STR);
+        $request->execute();
+        $estPresent = $request->fetchColumn() > 0;
+        $request->closeCursor();
 
         return $estPresent;
+    }
+
+    public function getUserId(string $email) : int {
+        $request = $this->pdo->prepare("SELECT id FROM users WHERE email = :Email");
+        $request->bindValue(':Email', $email, PDO::PARAM_STR);
+        $request->execute();
+        $id = $request->fetchColumn();
+        $request->closeCursor();
+
+        return $id;
     }
 }
