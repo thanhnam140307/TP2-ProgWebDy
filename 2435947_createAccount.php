@@ -1,7 +1,7 @@
 <?php
-    include_once "src\database.php";
-    include_once "class\2435947_UserDAO.class.php";
-    include_once "class\2435947_UserDTO.class.php";
+    include_once "src/database.php";
+    include_once "class/2435947_UserDAO.class.php";
+    include_once "class/2435947_UserDTO.class.php";
     include_once "2435947_functions.php";
 
     $conn = connect_db();

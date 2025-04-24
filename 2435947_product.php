@@ -1,9 +1,9 @@
 <?php
-    include_once "src\database.php";
-    include_once "class\2435947_OrderDAO.class.php";
-    include_once "class\2435947_OrderItemDAO.class.php";
-    include_once "class\2435947_ProductDAO.class.php";
-    include_once "class\2435947_UserDAO.class.php";
+    include_once "src/database.php";
+    include_once "class/2435947_OrderDAO.class.php";
+    include_once "class/2435947_OrderItemDAO.class.php";
+    include_once "class/2435947_ProductDAO.class.php";
+    include_once "class/2435947_UserDAO.class.php";
     include_once "2435947_functions.php";
 
     if (isset($_GET['sku']))
