@@ -3,7 +3,7 @@
     include_once "class/OrderDAO.class.php";
     include_once "class/OrderItemDAO.class.php";
     include_once "class/ProductDAO.class.php";
-    include_once "class/UserDAO.class.php";
+    include_once "class/CreateUserDAO.class.php";
     include_once "functions.php";
 
     if (isset($_GET['sku']))
