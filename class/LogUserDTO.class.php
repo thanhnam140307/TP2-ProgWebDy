@@ -16,7 +16,7 @@ class LogUserDTO {
     private $password;
 
     private $errors = [];
-
+w
     public function __construct($email, $password) {
         if ($this->isEmpty($email)) $this->errors = self::EX_EMPTY_EMAIL;
         if (!$this->validateEmail($email)) $this->errors = self::EX_INVALID_EMAIL;
