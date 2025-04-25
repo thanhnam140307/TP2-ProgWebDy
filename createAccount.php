@@ -1,6 +1,6 @@
 <?php
     include_once "src/database.php";
-    include_once "class/UserDAO.class.php";
+    include_once "class/CreateUserDAO.class.php";
     include_once "class/CreateUserDTO.class.php";
     include_once "functions.php";
 

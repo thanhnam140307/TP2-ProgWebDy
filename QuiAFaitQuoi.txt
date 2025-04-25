@@ -1,5 +1,11 @@
-Par Thanh Nam Nguyen :
+Par Thanh Nam Nguyen 2435947:
 class/CreateUserDAO.class.php
+class/CreateUserDTO.class.php
+class/ProductDAO.class.php
+createAccount.php
+product.php
+index.php
+sign-out.php
 
 Par Charly Paradis :
 class/LogUserDTO.class.php

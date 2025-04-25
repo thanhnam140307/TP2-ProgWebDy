@@ -1,7 +1,8 @@
 <?php
-//Par Thanh Nam Nguyen
-
 declare(strict_types=1);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Par Thanh Nam Nguyen
 session_start();
 
 function showProducts($list) {
@@ -106,3 +107,6 @@ function keepValidField($sessionName, $getEmpty, $getValid) {
     if (isset($_GET['submited'], $_SESSION[$sessionName]) && !$_GET[$getEmpty] && $_GET[$getValid]) 
         echo htmlspecialchars($_SESSION[$sessionName]);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Charlie Paradie
