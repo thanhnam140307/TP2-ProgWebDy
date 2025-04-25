@@ -1,0 +1,9 @@
+Par Thanh Nam Nguyen :
+
+
+Par Charly Paradis :
+class/LogUserDTO.class.php
+class/OrderDAO.class.php
+class/OrderItemDAO.class.php
+cart.php
+connection.php
