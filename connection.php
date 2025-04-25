@@ -8,16 +8,16 @@
 </head>
 <body>
     <header class="header">
-        <a href="2435947_index.php">
+        <a href="index.php">
             <img class="brand" src="img/brand.svg" alt="La Baie Ourson">
         </a>
     </header>
 
     <nav class="nav">
-        <a href="2435947_index.php">Produits</a>
-        <a href="2437527_cart.php">Panier</a>
-        <a href="2435947_createAccount.php">Créer un compte</a>
-        <a  class="active" href="2437527_connection.php">Se connecter</a>
+        <a href="index.php">Produits</a>
+        <a href="cart.php">Panier</a>
+        <a href="createAccount.php">Créer un compte</a>
+        <a  class="active" href="connection.php">Se connecter</a>
     </nav>
 </body>
 </html>

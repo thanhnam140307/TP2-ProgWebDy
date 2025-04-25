@@ -1,7 +1,7 @@
 <?php
     include_once "src/database.php";
-    include_once "class/2435947_ProductDAO.class.php";
-    include_once "2435947_functions.php";
+    include_once "class/ProductDAO.class.php";
+    include_once "functions.php";
 
     $conn = connect_db();
     $product = new Product($conn);
@@ -20,16 +20,16 @@
 
 <body>
     <header class="header">
-        <a href="2435947_index.php">
+        <a href="index.php">
             <img class="brand" src="img/brand.svg" alt="La Baie Ourson">
         </a>
     </header>
 
     <nav class="nav">
-        <a class="active" href="2435947_index.php">Produits</a>
-        <a href="2437527_cart.php">Panier</a>
-        <a href="2435947_createAccount.php">Créer un compte</a>
-        <a href="2437527_connection.php">Se connecter</a>
+        <a class="active" href="index.php">Produits</a>
+        <a href="cart.php">Panier</a>
+        <a href="createAccount.php">Créer un compte</a>
+        <a href="connection.php">Se connecter</a>
     </nav>
 
     <main>

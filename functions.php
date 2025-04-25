@@ -7,7 +7,7 @@ session_start();
 function showProducts($list) {
     foreach ($list as $product) {
         echo
-        '<a class="product" href="2435947_product.php?sku=' . $product['sku'] . '">
+        '<a class="product" href="product.php?sku=' . $product['sku'] . '">
             <img class="image" src="img/' . $product['sku'] . '.png" alt="' . $product['name'] . '">
             <div class="name">' . $product['name'] . '</div>
             <div class="price">' . $product['price'] . ' $</div>
@@ -48,7 +48,7 @@ function createSession($email, $password, $confirmPassword) {
 function navigate($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword) {
     header('HTTP/1.1 303 See Other');
     header(
-        'Location: 2435947_createAccount.php?submited&isPresent=' . $isPresent . 
+        'Location: createAccount.php?submited&isPresent=' . $isPresent . 
         '&hasError=' . $hasError . 
         '&emailEmpty=' . $isEmailEmpty .
         '&passwordEmpty=' . $isPasswordEmpty .

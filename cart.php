@@ -10,16 +10,16 @@
 
 <body>
     <header class="header">
-        <a href="2435947_index.php">
+        <a href="index.php">
             <img class="brand" src="img/brand.svg" alt="La Baie Ourson">
         </a>
     </header>
     <nav class="nav">
-        <a href="2435947_index.php">Produits</a>
-        <a class="active" href="2437527_cart.php">Panier</a>
+        <a href="index.php">Produits</a>
+        <a class="active" href="cart.php">Panier</a>
         <?php if (true): ?>
-        <a href="2435947_createAccount.php">Créer un compte</a>
-        <a href="2437527_connection.php">Se connecter</a>
+        <a href="createAccount.php">Créer un compte</a>
+        <a href="connection.php">Se connecter</a>
         <?php endif;
         if (false): ?>
         <a href="">Se déconnecter</a>

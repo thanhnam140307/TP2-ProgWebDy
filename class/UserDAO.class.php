@@ -36,6 +36,7 @@ class UserDAO
         return $estPresent;
     }
 
+    //Par Thanh Nam Nguyen
     public function getUserId(string $email) : int {
         $request = $this->pdo->prepare("SELECT id FROM users WHERE email = :Email");
         $request->bindValue(':Email', $email, PDO::PARAM_STR);

@@ -1,16 +1,16 @@
 <?php
     include_once "src/database.php";
-    include_once "class/2435947_OrderDAO.class.php";
-    include_once "class/2435947_OrderItemDAO.class.php";
-    include_once "class/2435947_ProductDAO.class.php";
-    include_once "class/2435947_UserDAO.class.php";
-    include_once "2435947_functions.php";
+    include_once "class/OrderDAO.class.php";
+    include_once "class/OrderItemDAO.class.php";
+    include_once "class/ProductDAO.class.php";
+    include_once "class/UserDAO.class.php";
+    include_once "functions.php";
 
     if (isset($_GET['sku']))
         $sku = $_GET['sku'];
 
     else {
-        header('Location: 2435947_index.php');
+        header('Location: index.php');
         exit();
     }
 
@@ -24,7 +24,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        if (isset($_SESSION['email']) && $_POST["quantity"] > 0) {
+        if (!empty($_SESSION['email']) && $_POST["quantity"] > 0) {
 
             $userDAO = new UserDAO($conn);
             $order = new Order($conn);
@@ -54,16 +54,16 @@
 
 <body>
     <header class="header">
-        <a href="2435947_index.php">
+        <a href="index.php">
             <img class="brand" src="img/brand.svg" alt="La Baie Ourson">
         </a>
     </header>
 
     <nav class="nav">
-        <a href="2435947_index.php">Produits</a>
-        <a href="2437527_cart.php">Panier</a>
-        <a href="2435947_createAccount.php">Créer un compte</a>
-        <a href="2437527_connection.php">Se connecter</a>
+        <a href="index.php">Produits</a>
+        <a href="cart.php">Panier</a>
+        <a href="createAccount.php">Créer un compte</a>
+        <a href="connection.php">Se connecter</a>
     </nav>
 
     <main>
