@@ -31,4 +31,3 @@ class Product {
         return (string)$column;
     }
 }
-?>

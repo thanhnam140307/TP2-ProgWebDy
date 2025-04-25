@@ -106,4 +106,3 @@ function keepValidField($sessionName, $getEmpty, $getValid) {
     if (isset($_GET['submited'], $_SESSION[$sessionName]) && !$_GET[$getEmpty] && $_GET[$getValid]) 
         echo htmlspecialchars($_SESSION[$sessionName]);
 }
-?>
