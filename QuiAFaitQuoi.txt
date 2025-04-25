@@ -1,5 +1,5 @@
 Par Thanh Nam Nguyen :
-
+class/CreateUserDAO.class.php
 
 Par Charly Paradis :
 class/LogUserDTO.class.php
