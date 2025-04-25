@@ -25,17 +25,10 @@
     </header>
 
     <nav class="nav">
-<<<<<<< HEAD:2437527_connection.php
-        <a href="2435947_index.php">Produits</a>
-        <a href="2437527_cart.php">Panier</a>
-        <a href="2435947_createAccount.php">Créer un compte</a>
-        <a class="active" href="2437527_connection.php">Se connecter</a>
-=======
         <a href="index.php">Produits</a>
         <a href="cart.php">Panier</a>
         <a href="createAccount.php">Créer un compte</a>
         <a class="active" href="connection.php">Se connecter</a>
->>>>>>> 07389aaf4ef42c9e3e6aa226a7df9c2f3810ca94:connection.php
     </nav>
 
     <main>
