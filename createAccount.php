@@ -1,7 +1,7 @@
 <?php
     include_once "src/database.php";
     include_once "class/UserDAO.class.php";
-    include_once "class/UserDTO.class.php";
+    include_once "class/CreateUserDTO.class.php";
     include_once "functions.php";
 
     $conn = connect_db();
@@ -43,8 +43,8 @@
             <h1 class="title">Créer mon compte Ourson</h1>
 
             <?php 
-                writeErrors();
-                insert($userDAO);
+                writeErrorsCreateUser();
+                insertUser($userDAO);
             ?>
 
             <label for="email">Adresse courrier :</label>

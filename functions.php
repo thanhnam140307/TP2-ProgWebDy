@@ -16,10 +16,14 @@ function showProducts($list) {
 }
 
 function validateAccount($hasError, $isPresent, $userDTO, $userDAO) {
+    $email = $userDTO->getEmail();
+    $password = $userDTO->getPassword();
+    $confirmPassword = $userDTO->getConfirmPassword();
+
     //Valider
-    $isEmailEmpty = $userDTO->isEmpty($userDTO->email);
-    $isPasswordEmpty = $userDTO->isEmpty($userDTO->password);
-    $isConfirmPasswordEmpty = $userDTO->isEmpty($userDTO->confirmPassword);
+    $isEmailEmpty = $userDTO->isEmpty($email);
+    $isPasswordEmpty = $userDTO->isEmpty($password);
+    $isConfirmPasswordEmpty = $userDTO->isEmpty($confirmPassword);
 
     $isValidEmail = $userDTO->isEqualToRegex("email");
     $isValidPassword = $userDTO->isEqualToRegex("password");
@@ -29,14 +33,14 @@ function validateAccount($hasError, $isPresent, $userDTO, $userDAO) {
     if ($isEmailEmpty || $isPasswordEmpty || $isConfirmPasswordEmpty || !$isValidEmail || !$isValidPassword || !$isValidConfirmPassword)
         $hasError = true;
 
-    if ($userDAO->isEmailPresent($userDTO->email))
+    if ($userDAO->isEmailPresent($email))
         $isPresent = true;
     
     //Créer les sessions
-    createSession($userDTO->email, $userDTO->password, $userDTO->confirmPassword);
+    createSession($email, $password, $confirmPassword);
     
     //PRG
-    navigate($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword);
+    navigateToCreateAccount($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword);
 }
 
 function createSession($email, $password, $confirmPassword) {
@@ -45,7 +49,7 @@ function createSession($email, $password, $confirmPassword) {
     $_SESSION['confirmPassword'] = $confirmPassword;
 }
 
-function navigate($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword) {
+function navigateToCreateAccount($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword) {
     header('HTTP/1.1 303 See Other');
     header(
         'Location: createAccount.php?submited&isPresent=' . $isPresent . 
@@ -61,7 +65,7 @@ function navigate($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isCon
     exit();
 }
 
-function writeErrors() {
+function writeErrorsCreateUser() {
     if (isset($_GET['submited'])) {
 
         if ($_GET['hasError']) {
@@ -84,7 +88,16 @@ function writeErrors() {
     }
 }
 
-function insert($userDAO) {
+function writeErrorsProduct($isConnected, $isEnnoughStock) {
+    if (!$isConnected || !$isEnnoughStock) {
+        echo "<ul class=\"error-list\">";
+            if (!$isConnected) echo "<li>Vous n'êtes pas connecté.</li>";
+            if (!$isEnnoughStock) echo "<li>Il n'y a plus de stock restant.</li>";
+        echo "</ul>";
+    }
+}
+
+function insertUser($userDAO) {
     if (isset($_GET['submited']) && !$_GET['hasError'] && !$_GET['isPresent'])
         $userDAO->insertUser($_SESSION['email'], $_SESSION['password']);
 }

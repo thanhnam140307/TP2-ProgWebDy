@@ -35,7 +35,7 @@
             $orderId = $order->getOrderId($userId); 
             $orderItem->insertOrderItem($orderId, $sku, $_POST["quantity"]);
 
-            header('Location: 2437527_cart.php');
+            header('Location: cart.php');
             exit();
         }
     }
@@ -67,17 +67,34 @@
     </nav>
 
     <main>
+        <?php
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $isConnected = true;
+                $isEnnoughStock = true;
+
+                if (empty($_SESSION['email'])) 
+                        $isConnected = false;
+
+                if ($stock == "0")
+                    $isEnnoughStock = false;
+
+                writeErrorsProduct($isConnected, $isEnnoughStock);
+            }
+        ?>
+
         <section class="product-detail">
             <img class="image" src="img/<?php echo $sku; ?>.png" alt="Tuque rouge">
 
             <h1 class="name"><?php echo $name ?></h1>
-            <div class="description" v=""><?php echo $description ?></div>
+            <div class="description"><?php echo $description ?></div>
             <div class="price">
                 <?php echo $price . " $ - " . $stock . " restant(s)." ?>
             </div>
 
             <form method="post">
-                <input class="quantity" name="quantity" type="number" value="<?php if ($stock == "0") echo "0"; else echo "1" ?>" min="<?php if ($stock == "0") echo "0"; else echo "1" ?>" max="<?php echo $stock ?>">
+                <input class="quantity" name="quantity" type="number"
+                    value="<?php if ($stock == "0") echo "0"; else echo "1" ?>"
+                    min="<?php if ($stock == "0") echo "0"; else echo "1" ?>" max="<?php echo $stock ?>">
                 <button>Ajouter au panier</button>
             </form>
         </section>
