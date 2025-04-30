@@ -89,15 +89,6 @@ function writeErrorsCreateUser() {
     }
 }
 
-function writeErrorsProduct($isConnected, $isEnnoughStock) {
-    if (!$isConnected || !$isEnnoughStock) {
-        echo "<ul class=\"error-list\">";
-            if (!$isConnected) echo "<li>Vous n'êtes pas connecté.</li>";
-            if (!$isEnnoughStock) echo "<li>Il n'y a plus de stock restant.</li>";
-        echo "</ul>";
-    }
-}
-
 function insertUser($userDAO) {
     if (isset($_GET['submited']) && !$_GET['hasError'] && !$_GET['isPresent'])
         $userDAO->insertUser($_SESSION['email'], $_SESSION['password']);
@@ -106,6 +97,38 @@ function insertUser($userDAO) {
 function keepValidField($sessionName, $getEmpty, $getValid) {
     if (isset($_GET['submited'], $_SESSION[$sessionName]) && !$_GET[$getEmpty] && $_GET[$getValid]) 
         echo htmlspecialchars($_SESSION[$sessionName]);
+}
+
+function cookieProduct($sku, $name, $price, $quantity) {
+    //https://webrewrite.com/store-array-values-cookie/
+    //https://www.w3schools.com/PHP/php_arrays_update.asp
+
+    $tableProduct = [];
+    $isPresent = false;
+
+    if (isset($_COOKIE['product'])) {
+        $tableProduct = json_decode($_COOKIE['product'], true);
+
+        foreach ($tableProduct as &$product) {
+            if ($product['sku'] == $sku) {
+                $product['quantity'] += (int)$quantity;
+                $isPresent = true;
+                break;
+            }
+        }
+        unset($product);
+    }
+
+    if (!$isPresent || !isset($_COOKIE['product'])) {
+        $tableProduct[] = array(
+            "sku" => $sku,
+            "name" => $name,
+            "price" => $price,
+            "quantity" => (int)$quantity
+        );
+    }
+
+    setcookie("product", json_encode($tableProduct), time() + 60 * 60 * 24 * 30);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
