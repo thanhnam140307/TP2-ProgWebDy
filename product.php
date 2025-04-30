@@ -1,43 +1,57 @@
 <?php
     include_once "src/database.php";
-    include_once "class/OrderDAO.class.php";
-    include_once "class/OrderItemDAO.class.php";
     include_once "class/ProductDAO.class.php";
-    include_once "class/CreateUserDAO.class.php";
     include_once "functions.php";
 
-    if (isset($_GET['sku']))
-        $sku = $_GET['sku'];
-
-    else {
+    if (!isset($_GET['sku'])){
         header('Location: index.php');
         exit();
     }
 
     $conn = connect_db();
     $product = new Product($conn);
+    //setcookie("product", "", time()-(60*60)); 
 
+    $sku = $_GET['sku'];
     $name = $product->getColumnFromProduct($sku, "name");
     $description = $product->getColumnFromProduct($sku, "description");
-    $price = $product->getColumnFromProduct($sku, "price");
-    $stock = $product->getColumnFromProduct($sku, "stock");
+    $returnedPrice = $product->getColumnFromProduct($sku, "price");
+    $price = floatval($returnedPrice);
+    $quantity = (int)$product->getColumnFromProduct($sku, "stock");
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['email']) && $_POST["quantity"] > 0) {
+        //https://webrewrite.com/store-array-values-cookie/
+        //https://www.w3schools.com/PHP/php_arrays_update.asp
 
-        if (!empty($_SESSION['email']) && $_POST["quantity"] > 0) {
+        $tableProduct = [];
+        $isPresent = false;
 
-            $userDAO = new UserDAO($conn);
-            $order = new Order($conn);
-            $orderItem = new OrderItem($conn);
+        if(isset($_COOKIE['product'])) {
+            $tableProduct = json_decode($_COOKIE['product'], true);
 
-            $userId = $userDAO->getUserId($_SESSION['email']);
-            $order->insertUserId($userId);
-            $orderId = $order->getOrderId($userId); 
-            $orderItem->insertOrderItem($orderId, $sku, $_POST["quantity"]);
-
-            header('Location: cart.php');
-            exit();
+            foreach ($tableProduct as &$product) {
+                if ($product['sku'] == $sku) {
+                    $product['quantity'] += (int)$_POST["quantity"];
+                    $isPresent = true;
+                    break;
+                }
+            }
+            unset($product);
         }
+        
+        if (!$isPresent || !isset($_COOKIE['product'])) {
+            $tableProduct[] = array(
+                "sku" => $sku,
+                "name" => $name,
+                "price" => $price,
+                "quantity" => (int)$_POST["quantity"]
+            );
+        }
+            
+        setcookie("product", json_encode($tableProduct), time() + 60*60*24*30, null, null, false, true);
+
+        header('Location: cart.php');
+        exit();
     }
 ?>
 
@@ -68,6 +82,9 @@
 
     <main>
         <?php
+        if (isset($_COOKIE['product'])) {
+            var_dump(json_decode($_COOKIE['product'], true));
+        }
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $isConnected = true;
                 $isEnnoughStock = true;
@@ -75,11 +92,16 @@
                 if (empty($_SESSION['email'])) 
                         $isConnected = false;
 
-                if ($stock == "0")
+                if ($quantity == "0")
                     $isEnnoughStock = false;
 
                 writeErrorsProduct($isConnected, $isEnnoughStock);
             }
+
+           /* array(2) { 
+                [0]=> array(2) { [0]=> array(1) { [0]=> array(4) { ["sku"]=> string(8) "AW632147" ["name"]=> string(11) "Tuque rouge" ["price"]=> float(5.99) ["quantity"]=> int(1) } }
+                [1]=> array(4) { ["sku"]=> string(8) "AW678523" ["name"]=> string(15) "Mitaines grises" ["price"]=> float(14.99) ["quantity"]=> int(20) } } 
+                [1]=> array(4) { ["sku"]=> string(8) "AW745821" ["name"]=> string(14) "Gants Nounours" ["price"]=> float(7.99) ["quantity"]=> int(40) } }*/
         ?>
 
         <section class="product-detail">
@@ -88,13 +110,13 @@
             <h1 class="name"><?php echo $name ?></h1>
             <div class="description"><?php echo $description ?></div>
             <div class="price">
-                <?php echo $price . " $ - " . $stock . " restant(s)." ?>
+                <?php echo $price . " $ - " . $quantity . " restant(s)." ?>
             </div>
 
             <form method="post">
                 <input class="quantity" name="quantity" type="number"
-                    value="<?php if ($stock == "0") echo "0"; else echo "1" ?>"
-                    min="<?php if ($stock == "0") echo "0"; else echo "1" ?>" max="<?php echo $stock ?>">
+                    value="<?php if ($quantity == "0") echo "0"; else echo "1" ?>"
+                    min="<?php if ($quantity == "0") echo "0"; else echo "1" ?>" max="<?php echo $quantity ?>">
                 <button>Ajouter au panier</button>
             </form>
         </section>
