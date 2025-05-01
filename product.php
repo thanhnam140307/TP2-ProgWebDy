@@ -1,4 +1,5 @@
 <?php
+//Par Thanh Nam Nguyen
 include_once "src/database.php";
 include_once "class/ProductDAO.class.php";
 include_once "functions.php";
@@ -11,14 +12,13 @@ if (!isset($_GET['sku'])) {
 $conn = connect_db();
 $product = new Product($conn);
 // Pour déboguer : setcookie("product", "", time()-(60*60)); 
-
 $sku = $_GET['sku'];
 $name = $product->getColumnFromProduct($sku, "name");
 $description = $product->getColumnFromProduct($sku, "description");
 $price = floatval($product->getColumnFromProduct($sku, "price"));
 $quantity = (int)$product->getColumnFromProduct($sku, "stock");
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['email'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_COOKIE['email'])) {
     cookieProduct($sku, $name, $price, $_POST["quantity"]);
 
     header('Location: cart.php');
@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['email'])) {
 
 <!DOCTYPE html>
 <html lang="fr">
-<!--Par Thanh Nam Nguyen-->
 
 <head>
     <meta charset="UTF-8">
@@ -47,8 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['email'])) {
     <nav class="nav">
         <a href="index.php">Produits</a>
         <a href="cart.php">Panier</a>
-        <?php if (!isset($_COOKIE['email'])) echo '<a href="createAccount.php">Créer un compte</a>
-        <a href="connection.php">Se connecter</a>' ?>
+        <?php
+        if (!isset($_COOKIE['email'])) {
+            echo
+            '<a href="createAccount.php">Créer un compte</a>
+            <a href="connection.php">Se connecter</a>';
+        } else echo '<a href="sign-out.php">Se déconnecter</a>'
+        ?>
     </nav>
 
     <main>
@@ -59,10 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['email'])) {
         }*/
 
         // À vérifier que le cookie de connection existe
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SESSION['email'])) {
-            echo "<ul class=\"error-list\">
-                        <li>Vous n'êtes pas connecté.</li>
-                    </ul>";
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_COOKIE['email'])) {
+            echo
+            "<ul class=\"error-list\">
+                <li>Vous n'êtes pas connecté.</li>
+            </ul>";
         }
 
         ?>

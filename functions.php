@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
+session_start();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Par Thanh Nam Nguyen
-session_start();
 
 function showProducts($list) {
     foreach ($list as $product) {
@@ -92,8 +92,12 @@ function writeErrorsCreateUser() {
 function insertUser($userDAO) {
     if (isset($_GET['submited']) && !$_GET['hasError'] && !$_GET['isPresent']) {
         $userDAO->insertUser($_SESSION['email'], $_SESSION['password']);
+        
         setcookie("email", $_SESSION['email'], time() + 60 * 60 * 24 * 30);
         setcookie("password", $_SESSION['password'], time() + 60 * 60 * 24 * 30);
+
+        header('Location: index.php');
+        exit();
     }
 }
 

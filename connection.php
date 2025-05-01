@@ -1,3 +1,13 @@
+<?php
+    include_once "src/database.php";
+    include_once "functions.php";
+    include_once "class/LogUserDTO.class.php";
+    include_once "class/2435947_UserDAO.class.php";
+
+    $conn = connect_db();
+    
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -9,15 +19,6 @@
 </head>
 
 <body>
-    <?php
-    include_once "src/database.php";
-    include_once "2435947_functions.php";
-    include_once "class/2435947_UserDTO.class.php";
-    include_once "class/2435947_UserDAO.class.php";
-
-    $conn = connect_db();
-    
-    ?>
     <header class="header">
         <a href="index.php">
             <img class="brand" src="img/brand.svg" alt="La Baie Ourson">

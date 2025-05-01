@@ -1,15 +1,15 @@
 <?php
-    include_once "src/database.php";
-    include_once "class/ProductDAO.class.php";
-    include_once "functions.php";
+//Par Thanh Nam Nguyen
+include_once "src/database.php";
+include_once "class/ProductDAO.class.php";
+include_once "functions.php";
 
-    $conn = connect_db();
-    $product = new Product($conn);
+$conn = connect_db();
+$product = new Product($conn);
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<!--Par Thanh Nam Nguyen-->
 
 <head>
     <meta charset="UTF-8">
@@ -28,8 +28,13 @@
     <nav class="nav">
         <a class="active" href="index.php">Produits</a>
         <a href="cart.php">Panier</a>
-        <?php if (!isset($_COOKIE['email'])) echo '<a href="createAccount.php">Créer un compte</a>
-        <a href="connection.php">Se connecter</a>' ?>
+        <?php
+        if (!isset($_COOKIE['email'])) {
+            echo
+            '<a href="createAccount.php">Créer un compte</a>
+            <a href="connection.php">Se connecter</a>';
+        } else echo '<a href="sign-out.php">Se déconnecter</a>'
+        ?>
     </nav>
 
     <main>

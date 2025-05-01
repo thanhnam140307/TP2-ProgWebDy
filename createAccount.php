@@ -1,23 +1,23 @@
 <?php
-    include_once "src/database.php";
-    include_once "class/CreateUserDAO.class.php";
-    include_once "class/CreateUserDTO.class.php";
-    include_once "functions.php";
+//Par Thanh Nam Nguyen
+include_once "src/database.php";
+include_once "class/CreateUserDAO.class.php";
+include_once "class/CreateUserDTO.class.php";
+include_once "functions.php";
 
-    $conn = connect_db();
-    $userDAO = new UserDAO($conn);
+$conn = connect_db();
+$userDAO = new UserDAO($conn);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $userDTO = new UserDTO(htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']), htmlspecialchars($_POST['confirmPassword']));
-        validateAccount(false, false, $userDTO, $userDAO);
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userDTO = new UserDTO(htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']), htmlspecialchars($_POST['confirmPassword']));
+    validateAccount(false, false, $userDTO, $userDAO);
+}
 
-    insertUser($userDAO);
+insertUser($userDAO);
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<!--Par Thanh Nam Nguyen-->
 
 <head>
     <meta charset="UTF-8">
@@ -44,9 +44,7 @@
         <form class="form" method="POST">
             <h1 class="title">Créer mon compte Ourson</h1>
 
-            <?php 
-                writeErrorsCreateUser();
-            ?>
+            <?php writeErrorsCreateUser(); ?>
 
             <label for="email">Adresse courrier :</label>
             <input id="email" type="text" name="email"
