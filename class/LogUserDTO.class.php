@@ -1,6 +1,7 @@
 <?php
 //Charly Paradis
 declare(strict_types=1);
+include_once "ListException.class.php";
 
 class LogUserDTO {
     
@@ -18,11 +19,11 @@ class LogUserDTO {
     private $errors = [];
 
     public function __construct($email, $password) {
-        if ($this->isEmpty($email)) $this->errors = self::EX_EMPTY_EMAIL;
-        if (!$this->validateEmail($email)) $this->errors = self::EX_INVALID_EMAIL;
-        if ($this->isEmpty($password)) $this->errors = self::EX_EMPTY_PASSWORD;
-        if (!$this->validateEmail($password)) $this->errors = self::EX_INVALID_PASSWORD;
-        if (!empty($this->errors)) throw new InvalidArgumentException($this->errors);
+        if ($this->isEmpty($email)) $this->errors[] = self::EX_EMPTY_EMAIL;
+        if (!$this->validateEmail($email)) $this->errors[] = self::EX_INVALID_EMAIL;
+        if ($this->isEmpty($password)) $this->errors[] = self::EX_EMPTY_PASSWORD;
+        if (!$this->validatePassword($password)) $this->errors[] = self::EX_INVALID_PASSWORD;
+        if (!empty($this->errors)) throw new ListException(messages: $this->errors);
         $this->email = $email;
         $this->password = $password;
     }
@@ -32,11 +33,19 @@ class LogUserDTO {
     }
 
     private function validateEmail(string $email): bool {
-        return preg_match(self::EMAIL_REGEX, trim($email));
+        return preg_match(self::EMAIL_REGEX, trim($email)) == 1;
     }
 
     private function validatePassword(string $password): bool {
-        return preg_match(self::PASSWORD_REGEX, trim($password));
+        return preg_match(self::PASSWORD_REGEX, trim($password)) == 1;
+    }
+
+    public function getEmail() : string {
+        return $this->email;
+    }
+
+    public function getPassword() : string {
+        return $this->password;
     }
 
 }

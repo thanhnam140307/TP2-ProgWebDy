@@ -7,9 +7,10 @@ product.php
 index.php
 sign-out.php
 
-Par Charly Paradis :
+Par Charly Paradis 2437527 :
 class/LogUserDTO.class.php
 class/OrderDAO.class.php
 class/OrderItemDAO.class.php
 cart.php
 connection.php
+class/ListException.class.php
