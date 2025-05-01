@@ -5,6 +5,7 @@ session_start();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Par Thanh Nam Nguyen
 
+//Lister les produits contenu dans la BD
 function showProducts($list) {
     foreach ($list as $product) {
         echo
@@ -16,6 +17,7 @@ function showProducts($list) {
     }
 }
 
+//Valider la création de compte et appliquer PRG
 function validateAccount($hasError, $isPresent, $userDTO, $userDAO) {
     $email = $userDTO->getEmail();
     $password = $userDTO->getPassword();
@@ -44,12 +46,14 @@ function validateAccount($hasError, $isPresent, $userDTO, $userDAO) {
     navigateToCreateAccount($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword);
 }
 
+//Créer les sessions pour les trois champs lors de la création de compte
 function createSession($email, $password, $confirmPassword) {
     $_SESSION['email'] = $email;
     $_SESSION['password'] = $password;
     $_SESSION['confirmPassword'] = $confirmPassword;
 }
 
+//Naviguer à createAccount selon les demandes du PRG
 function navigateToCreateAccount($hasError, $isPresent, $isEmailEmpty, $isPasswordEmpty, $isConfirmPasswordEmpty, $isValidEmail, $isValidPassword, $isValidConfirmPassword) {
     header('HTTP/1.1 303 See Other');
     header(
@@ -66,6 +70,7 @@ function navigateToCreateAccount($hasError, $isPresent, $isEmailEmpty, $isPasswo
     exit();
 }
 
+//Écrire les erreurs lors de la création de compte
 function writeErrorsCreateUser() {
     if (isset($_GET['submited'])) {
 
@@ -89,6 +94,7 @@ function writeErrorsCreateUser() {
     }
 }
 
+//Insérer l'utilisateur dans la BD et se connecter directement par des cookies
 function insertUser($userDAO) {
     if (isset($_GET['submited']) && !$_GET['hasError'] && !$_GET['isPresent']) {
         $userDAO->insertUser($_SESSION['email'], $_SESSION['password']);
@@ -101,11 +107,13 @@ function insertUser($userDAO) {
     }
 }
 
+//Garder les champs valides lors de la création de compte
 function keepValidField($sessionName, $getEmpty, $getValid) {
     if (isset($_GET['submited'], $_SESSION[$sessionName]) && !$_GET[$getEmpty] && $_GET[$getValid]) 
         echo htmlspecialchars($_SESSION[$sessionName]);
 }
 
+//Mettre les achats dans un array pour le panier
 function cookieProduct($sku, $name, $price, $quantity) {
     //https://webrewrite.com/store-array-values-cookie/
     //https://www.w3schools.com/PHP/php_arrays_update.asp

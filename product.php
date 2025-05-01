@@ -12,6 +12,7 @@ if (!isset($_GET['sku'])) {
 $conn = connect_db();
 $product = new Product($conn);
 // Pour déboguer : setcookie("product", "", time()-(60*60)); 
+//Obtenir le sku et les autres champs nécessaires
 $sku = $_GET['sku'];
 $name = $product->getColumnFromProduct($sku, "name");
 $description = $product->getColumnFromProduct($sku, "description");
@@ -19,6 +20,7 @@ $price = floatval($product->getColumnFromProduct($sku, "price"));
 $quantity = (int)$product->getColumnFromProduct($sku, "stock");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_COOKIE['email'])) {
+    //Manipuler le cookie du produit
     cookieProduct($sku, $name, $price, $_POST["quantity"]);
 
     header('Location: cart.php');
@@ -57,11 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_COOKIE['email'])) {
 
     <main>
         <?php
-        //Pour déboguer
-        /*if (isset($_COOKIE['product'])) {
-            print_r(json_decode($_COOKIE['product'], true));
-        }*/
-
         // À vérifier que le cookie de connection existe
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_COOKIE['email'])) {
             echo

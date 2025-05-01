@@ -10,6 +10,7 @@ class Product {
 		$this->pdo = $conn; 
 	} 
 
+    //Sélectionner les produits 
     public function selectableProduct() : array {
         $completeList = $this->pdo->prepare('SELECT * FROM product'); 
         $completeList->execute();
@@ -19,6 +20,7 @@ class Product {
         return $productList;
     }
 
+    //Obtenir un colonne spécifique
     public function getColumnFromProduct(string $sku, string $column) : string {
         $request = $this->pdo->prepare("SELECT ".$column." FROM product WHERE sku = :Sku");
         $request->bindValue(':Sku', $sku, PDO::PARAM_STR);

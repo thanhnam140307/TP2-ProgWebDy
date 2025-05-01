@@ -9,6 +9,7 @@ class Order {
 		$this->pdo = $conn; 
 	} 
 
+    //Ajouter un achat
     public function addOrder(int $userId) : void {
         $request = $this->pdo->prepare('INSERT INTO `order` (user_id) VALUES(:userId)');
         $request->bindValue(':userId', $userId, PDO::PARAM_INT);
@@ -16,6 +17,7 @@ class Order {
         $request->closeCursor();
     }
 
+    //Obtenir l'achat
     public function getOrder(int $userId) : int {
         $request = $this->pdo->prepare("SELECT id FROM `order` WHERE user_id = :userId and creation_date = NOW()");
         $request->bindValue(':userId', $userId, PDO::PARAM_INT);

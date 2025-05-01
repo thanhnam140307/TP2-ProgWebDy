@@ -1,11 +1,24 @@
 <?php
-    include_once "src/database.php";
-    include_once "functions.php";
-    include_once "class/LogUserDTO.class.php";
-    include_once "class/2435947_UserDAO.class.php";
+//Charly Paradis
+/*
+TN: 
+Jusque pour que tu saches:
 
-    $conn = connect_db();
-    
+Voici les cookies de connection, qui durent 1 mois
+Ces 2 lignes viennent de insertUser($userDAO) à la ligne 98, c'est juste pour te montrer:
+
+setcookie("email", $_SESSION['email'], time() + 60 * 60 * 24 * 30);
+setcookie("password", $_SESSION['password'], time() + 60 * 60 * 24 * 30);
+
+Si tu utilise des sessions nomme les comme en haut pour que ce soit facile 
+*/
+include_once "src/database.php";
+include_once "functions.php";
+include_once "class/LogUserDTO.class.php";
+include_once "class/2435947_UserDAO.class.php";
+
+$conn = connect_db();
+
 ?>
 
 <!DOCTYPE html>

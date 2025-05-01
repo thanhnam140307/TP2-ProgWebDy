@@ -9,6 +9,7 @@ class OrderItem {
 		$this->pdo = $conn; 
 	} 
 
+    //Ajouter un achat
     public function addOrderItem(int $orderId, string $SKU, string $quantity) : void {
         $requete = $this->pdo->prepare('INSERT INTO order_item (order_id, product_sku, quantity) VALUES(:orderId, :SKU, :quantity)');
         $requete->bindValue(':orderId', $orderId, PDO::PARAM_INT);

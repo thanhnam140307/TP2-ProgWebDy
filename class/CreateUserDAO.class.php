@@ -1,16 +1,15 @@
 <?php
+//Par Thanh Nam Nguyen
 declare(strict_types=1);
 
 class UserDAO
 {
     private $pdo;
 
-    //Par Thanh Nam Nguyen
     public function __construct($conn) {
         $this->pdo = $conn; 
     }
 
-    //Par Thanh Nam Nguyen
     public function insertUser(string $email, string $password) : void {
         $request = $this->pdo->prepare('INSERT INTO users(email, password) VALUES(:Email, :Password)');
         $password = $this->hashPassword($password);
@@ -20,12 +19,12 @@ class UserDAO
         $request->closeCursor();
     }
 
-    //Par Thanh Nam Nguyen
+    //Hasher le mot de passe
     private function hashPassword(string $password) : string {
         return password_hash($password, PASSWORD_ARGON2ID);
     }
 
-    //Par Thanh Nam Nguyen
+    //Vérifier si l'email est déjà présent
     public function isEmailPresent(string $email) : bool {
         $request = $this->pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :Email");
         $request->bindValue(':Email', $email, PDO::PARAM_STR);
@@ -36,7 +35,7 @@ class UserDAO
         return $estPresent;
     }
 
-    //Par Thanh Nam Nguyen
+    /*Obtenir L'id du user
     public function getUserId(string $email) : int {
         $request = $this->pdo->prepare("SELECT id FROM users WHERE email = :Email");
         $request->bindValue(':Email', $email, PDO::PARAM_STR);
@@ -45,5 +44,5 @@ class UserDAO
         $request->closeCursor();
 
         return $id;
-    }
+    }*/
 }

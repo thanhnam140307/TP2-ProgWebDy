@@ -21,6 +21,7 @@ class UserDTO
         return empty(trim($input));
     }
 
+    //Si ce champs respect le REGEX
     public function isEqualToRegex(string $inputType): bool {
         $regex = '';
 
@@ -43,6 +44,7 @@ class UserDTO
         return true;
     }
 
+    //Si le mot de passe est bien confirmé
     public function isConfirmPasswordCorrect(): bool {
         if ($this->confirmPassword == $this->password)
             return true;
