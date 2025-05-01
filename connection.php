@@ -8,6 +8,13 @@ include_once "class/LogUserDAO.class.php";
 
 $conn = connect_db();
 $loginDAO = new LogUserDAO($conn);
+
+function loadUser() {
+    setcookie("email", $_SESSION['email'], time() + 60 * 60 * 24 * 30);
+    setcookie("password", $_SESSION['password'], time() + 60 * 60 * 24 * 30);
+    header('Location: index.php');
+    die();
+}
 ?>
 
 <!DOCTYPE html>
@@ -47,10 +54,7 @@ $loginDAO = new LogUserDAO($conn);
                 try {
                     $login = new LogUserDTO($_SESSION['email'], $_SESSION['password']);
                     if ($loginDAO->connect($login)) {
-                        setcookie("email", $_SESSION['email'], time() + 60 * 60 * 24 * 30);
-                        setcookie("password", $_SESSION['password'], time() + 60 * 60 * 24 * 30);
-                        header('Location: index.php');
-                        die();
+                        loadUser();
                     } else {
                         echo '<ul class="error-list">';
                         echo '<li>Mot de passe ou utilisateur incorrect.</li>';
