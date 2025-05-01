@@ -11,6 +11,8 @@
         $userDTO = new UserDTO(htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']), htmlspecialchars($_POST['confirmPassword']));
         validateAccount(false, false, $userDTO, $userDAO);
     }
+
+    insertUser($userDAO);
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +46,6 @@
 
             <?php 
                 writeErrorsCreateUser();
-                insertUser($userDAO);
             ?>
 
             <label for="email">Adresse courrier :</label>

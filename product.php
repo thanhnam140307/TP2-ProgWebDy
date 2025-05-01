@@ -47,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['email'])) {
     <nav class="nav">
         <a href="index.php">Produits</a>
         <a href="cart.php">Panier</a>
-        <a href="createAccount.php">Créer un compte</a>
-        <a href="connection.php">Se connecter</a>
+        <?php if (!isset($_COOKIE['email'])) echo '<a href="createAccount.php">Créer un compte</a>
+        <a href="connection.php">Se connecter</a>' ?>
     </nav>
 
     <main>
@@ -57,13 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SESSION['email'])) {
         /*if (isset($_COOKIE['product'])) {
             print_r(json_decode($_COOKIE['product'], true));
         }*/
-        
+
         // À vérifier que le cookie de connection existe
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_SESSION['email'])) {
             echo "<ul class=\"error-list\">
                         <li>Vous n'êtes pas connecté.</li>
                     </ul>";
         }
+
         ?>
 
         <section class="product-detail">

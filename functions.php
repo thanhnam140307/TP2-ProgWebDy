@@ -90,8 +90,11 @@ function writeErrorsCreateUser() {
 }
 
 function insertUser($userDAO) {
-    if (isset($_GET['submited']) && !$_GET['hasError'] && !$_GET['isPresent'])
+    if (isset($_GET['submited']) && !$_GET['hasError'] && !$_GET['isPresent']) {
         $userDAO->insertUser($_SESSION['email'], $_SESSION['password']);
+        setcookie("email", $_SESSION['email'], time() + 60 * 60 * 24 * 30);
+        setcookie("password", $_SESSION['password'], time() + 60 * 60 * 24 * 30);
+    }
 }
 
 function keepValidField($sessionName, $getEmpty, $getValid) {
