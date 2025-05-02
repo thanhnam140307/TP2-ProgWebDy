@@ -21,7 +21,7 @@ $quantity = (int)$product->getColumnFromProduct($sku, "stock");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_COOKIE['email'])) {
     //Manipuler le cookie du produit
-    cookieProduct($sku, $name, $price, $_POST["quantity"]);
+    cookieProductAdd($sku, $name, $price, $_POST["quantity"]);
 
     header('Location: cart.php');
     exit();

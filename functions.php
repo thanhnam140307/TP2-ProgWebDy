@@ -114,7 +114,7 @@ function keepValidField($sessionName, $getEmpty, $getValid) {
 }
 
 //Mettre les achats dans un array pour le panier
-function cookieProduct($sku, $name, $price, $quantity) {
+function cookieProductAdd($sku, $name, $price, $quantity) {
     //https://webrewrite.com/store-array-values-cookie/
     //https://www.w3schools.com/PHP/php_arrays_update.asp
 
@@ -147,4 +147,37 @@ function cookieProduct($sku, $name, $price, $quantity) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Charlie Paradie
+//Charly Paradis
+
+//Enlever les achats dans un array pour le panier
+function cookieProductRemove($sku, $name, $price, $quantity) {
+    //https://webrewrite.com/store-array-values-cookie/
+    //https://www.w3schools.com/PHP/php_arrays_update.asp
+
+    $tableProduct = [];
+    $isPresent = false;
+
+    if (isset($_COOKIE['product'])) {
+        $tableProduct = json_decode($_COOKIE['product'], true);
+
+        foreach ($tableProduct as &$product) {
+            if ($product['sku'] == $sku) {
+                $product['quantity'] += (int)$quantity;
+                $isPresent = true;
+                break;
+            }
+        }
+        unset($product);
+    }
+
+    if (!$isPresent || !isset($_COOKIE['product'])) {
+        $tableProduct[] = array(
+            "sku" => $sku,
+            "name" => $name,
+            "price" => $price,
+            "quantity" => (int)$quantity
+        );
+    }
+
+    setcookie("product", json_encode($tableProduct), time() + 60 * 60 * 24 * 30);
+}
