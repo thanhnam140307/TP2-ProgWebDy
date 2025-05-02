@@ -9,11 +9,22 @@ include_once "class/LogUserDAO.class.php";
 $conn = connect_db();
 $loginDAO = new LogUserDAO($conn);
 
-function loadUser() {
-    setcookie("email", $_SESSION['email'], time() + 60 * 60 * 24 * 30);
-    setcookie("password", $_SESSION['password'], time() + 60 * 60 * 24 * 30);
-    header('Location: index.php');
-    die();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $_SESSION['email'] = trim(htmlspecialchars($_POST['email']));
+    $_SESSION['password'] = trim(htmlspecialchars($_POST['password']));
+    try {
+        $login = new LogUserDTO($_SESSION['email'], $_SESSION['password']);
+        if ($loginDAO->connect($login)) {
+            setcookie("email", $_SESSION['email'], time() + 60 * 60 * 24 * 30);
+            setcookie("password", $_SESSION['password'], time() + 60 * 60 * 24 * 30);
+            header('Location: index.php');
+            die();
+        } else {
+            $_POST['errors'][] = 'Mot de passe ou utilisateur incorrect.';
+        }
+    } catch (ListException $e) {
+        $_POST['errors'] = $e->getMessages();
+    }
 }
 ?>
 
@@ -47,28 +58,13 @@ function loadUser() {
 
     <main>
         <div>
-            <?php
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $_SESSION['email'] = trim(htmlspecialchars($_POST['email']));
-                $_SESSION['password'] = trim(htmlspecialchars($_POST['password']));
-                try {
-                    $login = new LogUserDTO($_SESSION['email'], $_SESSION['password']);
-                    if ($loginDAO->connect($login)) {
-                        loadUser();
-                    } else {
-                        echo '<ul class="error-list">';
-                        echo '<li>Mot de passe ou utilisateur incorrect.</li>';
-                        echo '</ul>';
-                    }
-                } catch (ListException $e) {
-                    echo '<ul class="error-list">';
-                    foreach ($e->getMessages() as $error) {
-                        echo '<li>' . $error . '</li>';
-                    }
-                    echo '</ul>';
-                }
-            }
-            ?>
+        <?php if(isset($_POST['errors'])) :?>
+            <ul class="error-list">
+            <?php foreach($_POST['errors'] as $error) :?>
+                <li><?php echo $error;?></li>
+            <?php endforeach;?>
+            </ul>
+        <?php endif;?>
         </div>
         <form class="form" method="POST">
             <h1 class="title">Connexion à mon compte Ourson</h1>
