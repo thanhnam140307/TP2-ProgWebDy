@@ -95,7 +95,7 @@ function writeErrorsCreateUser() {
 }
 
 //Insérer l'utilisateur dans la BD et se connecter directement par des cookies
-function insertUser($userDAO) {
+function insertAndConnectUser($userDAO) {
     if (isset($_GET['submited']) && !$_GET['hasError'] && !$_GET['isPresent']) {
         $userDAO->insertUser($_SESSION['email'], $_SESSION['password']);
         

@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     validateAccount(false, false, $userDTO, $userDAO);
 }
 
-insertUser($userDAO);
+insertAndConnectUser($userDAO);
 ?>
 
 <!DOCTYPE html>
