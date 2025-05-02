@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="createAccount.php">Créer un compte</a>
             <a class="active" href="connection.php">Se connecter</a>
         <?php else : ?>
-            <a href="">Se déconnecter</a>
+            <a href="sign-out.php">Se déconnecter</a>
         <?php endif; ?>
     </nav>
 
