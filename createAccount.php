@@ -8,6 +8,11 @@ include_once "functions.php";
 $conn = connect_db();
 $userDAO = new UserDAO($conn);
 
+if (isset($_COOKIE['email'])) {
+    header('Location: index.php');
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userDTO = new UserDTO(htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']), htmlspecialchars($_POST['confirmPassword']));
     validateAccount(false, false, $userDTO, $userDAO);
