@@ -9,11 +9,15 @@ class CreateUserDTOTest extends TestCase
 {
     private const INPUT_TYPE_EMAIL = "email";
     private const INPUT_TYPE_PASSWORD = "password";
+    private const VALIDE_EMAIL = "newEmail@gmail.com";
+    private const VALIDE_PASSWORD = "12345678";
+    private const INVALIDE_EMAIL = "newEmail@gmail.";
+    private const INVALIDE_PASSWORD = "1234567";
 
     public function testCanCreateUserDTO()
     {
         // Arrange
-        $userDTO = new UserDTO(htmlspecialchars("newEmail@gmail.com"), htmlspecialchars("12345678"), htmlspecialchars("12345678"));
+        $userDTO = new UserDTO(self::VALIDE_EMAIL, self::VALIDE_PASSWORD, self::VALIDE_PASSWORD);
 
         //Act
         $email = $userDTO->getEmail();
@@ -21,15 +25,15 @@ class CreateUserDTOTest extends TestCase
         $confirmPassword = $userDTO->getConfirmPassword();
 
         // Assert
-        $this->assertEquals("newEmail@gmail.com", $email);
-        $this->assertEquals("12345678", $password);
-        $this->assertEquals("12345678", $confirmPassword);
+        $this->assertEquals(self::VALIDE_EMAIL, $email);
+        $this->assertEquals(self::VALIDE_PASSWORD, $password);
+        $this->assertEquals(self::VALIDE_PASSWORD, $confirmPassword);
     }
 
     public function testMethodIsEmptyCanCheckIfInputsEmpty()
     {
         // Arrange
-        $userDTO = new UserDTO(htmlspecialchars(""), htmlspecialchars(""), htmlspecialchars(""));
+        $userDTO = new UserDTO("", "", "");
 
         //Act
         $email = $userDTO->getEmail();
@@ -45,7 +49,7 @@ class CreateUserDTOTest extends TestCase
     public function testMethodIsEqualToRegexReturnTrueIfEmailAndPasswordFilledAndRespectRegex()
     {
         // Arrange
-        $userDTO = new UserDTO(htmlspecialchars("newEmail@gmail.com"), htmlspecialchars("12345678"), htmlspecialchars("12345678"));
+        $userDTO = new UserDTO(self::VALIDE_EMAIL, self::VALIDE_PASSWORD, self::VALIDE_PASSWORD);
 
         //Act
         $isEmailValide = $userDTO->isEqualToRegex(self::INPUT_TYPE_EMAIL);
@@ -59,7 +63,7 @@ class CreateUserDTOTest extends TestCase
     public function testMethodIsEqualToRegexReturnFalseIfEmailAndPasswordFilledAndNotRespectRegex()
     {
         // Arrange
-        $userDTO = new UserDTO(htmlspecialchars("newEmail@gmail."), htmlspecialchars("1234567"), htmlspecialchars("1234567"));
+        $userDTO = new UserDTO(self::INVALIDE_EMAIL, self::INVALIDE_PASSWORD, self::INVALIDE_PASSWORD);
 
         //Act
         $isEmailValide = $userDTO->isEqualToRegex(self::INPUT_TYPE_EMAIL);
@@ -73,7 +77,7 @@ class CreateUserDTOTest extends TestCase
     public function testMethodIsEqualToRegexReturnTrueIfEmailAndPasswordEmpty()
     {
         // Arrange
-        $userDTO = new UserDTO(htmlspecialchars(""), htmlspecialchars(""), htmlspecialchars(""));
+        $userDTO = new UserDTO("", "", "");
 
         //Act
         $isEmailValide = $userDTO->isEqualToRegex(self::INPUT_TYPE_EMAIL);
@@ -87,7 +91,7 @@ class CreateUserDTOTest extends TestCase
     public function testMethodIsConfirmPasswordCorrectReturnTrueIfConfirmPasswordEqualPassword()
     {
         // Arrange
-        $userDTO = new UserDTO(htmlspecialchars("newEmail@gmail.com"), htmlspecialchars("12345678"), htmlspecialchars("12345678"));
+        $userDTO = new UserDTO(self::VALIDE_EMAIL, self::VALIDE_PASSWORD, self::VALIDE_PASSWORD);
 
         //Act
         $isConfirmPasswordCorrect = $userDTO->isConfirmPasswordCorrect();
@@ -99,7 +103,7 @@ class CreateUserDTOTest extends TestCase
     public function testMethodIsConfirmPasswordCorrectReturnFalseIfConfirmPasswordNotEqualPassword()
     {
         // Arrange
-        $userDTO = new UserDTO(htmlspecialchars("newEmail@gmail.com"), htmlspecialchars("12345678"), htmlspecialchars("1234567"));
+        $userDTO = new UserDTO(self::VALIDE_EMAIL, self::VALIDE_PASSWORD, self::INVALIDE_PASSWORD);
 
         //Act
         $isConfirmPasswordCorrect = $userDTO->isConfirmPasswordCorrect();
