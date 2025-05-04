@@ -41,6 +41,7 @@ class UserDTO
         if (!$this->isEmpty($input) && preg_match($regex, $input))
             return true;
 
+        //Si le mot de passe ou l'email sont vides, retourner "vrai" afin que seul le message indiquant que les champs sont vides s'affiche.
         return true;
     }
 

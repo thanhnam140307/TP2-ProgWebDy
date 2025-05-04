@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-require_once __DIR__ . "\CreateUserDTO.class.php"; //C:\xampp\htdocs\PHPUnit\ZipCode.php
+require_once __DIR__ . "\CreateUserDTO.class.php";
 
 class CreateUserDTOTest extends TestCase
 {
@@ -107,5 +107,4 @@ class CreateUserDTOTest extends TestCase
         // Assert
 		$this->assertFalse($isConfirmPasswordCorrect);
     }
-    //vendor\bin\phpunit tests
 }
