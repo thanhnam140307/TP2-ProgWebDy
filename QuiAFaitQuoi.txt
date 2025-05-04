@@ -1,16 +1,22 @@
-Par Thanh Nam Nguyen 2435947:
+Par Thanh Nam Nguyen 2435947 (Mendat 1):
 class/CreateUserDAO.class.php
 class/CreateUserDTO.class.php
 class/ProductDAO.class.php
+tests/CreateUserDTOTest.php
 createAccount.php
-product.php
+functions.php
 index.php
+product.php
 sign-out.php
 
-Par Charly Paradis 2437527 :
+Par Charly Paradis 2437527 (Mendat 2):
+class/ListException.class.php
+class/LogUserDAO.class.php
 class/LogUserDTO.class.php
 class/OrderDAO.class.php
 class/OrderItemDAO.class.php
+class/ProductDAO.class.php (ajout d'une fonction pour la mise à jour de l'inventaire)
 cart.php
 connection.php
-class/ListException.class.php
+functions.php
+tests/LogUserDTOTest.php
