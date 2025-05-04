@@ -30,4 +30,14 @@ class Product {
 
         return (string)$column;
     }
+
+    // Par Charly :
+    // Mettre à jour l'inventaire
+    public function updateInventory(string $SKU, int $quantity) {
+        $request = $this->pdo->prepare("UPDATE product SET stock = stock - :quantity WHERE sku = :SKU");
+        $request->bindValue(':quantity', $quantity, PDO::PARAM_INT);
+        $request->bindValue(':SKU', $SKU, PDO::PARAM_STR);
+        $request->execute();
+        $request->closeCursor();
+    }
 }

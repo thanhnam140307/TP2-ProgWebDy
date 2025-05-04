@@ -9,6 +9,11 @@ include_once "class/LogUserDAO.class.php";
 $conn = connect_db();
 $loginDAO = new LogUserDAO($conn);
 
+if (isset($_COOKIE['email'])) {
+    header('Location: index.php');
+    die();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['email'] = trim(htmlspecialchars($_POST['email']));
     $_SESSION['password'] = trim(htmlspecialchars($_POST['password']));

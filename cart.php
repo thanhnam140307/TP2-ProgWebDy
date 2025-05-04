@@ -13,14 +13,46 @@ setcookie("product", "", time()-(60*60));
 include_once "src/database.php";
 include_once "functions.php";
 include_once "class/ListException.class.php";
+include_once "class/ProductDAO.class.php";
+include_once "class/LogUserDAO.class.php";
+include_once "class/OrderDAO.class.php";
+include_once "class/OrderItemDAO.class.php";
 
 $conn = connect_db();
+
+$productDAO = new Product($conn);
+$userDAO = new LogUserDAO($conn);
+$orderDAO = new OrderDAO($conn);
+$orderItemDAO = new OrderItemDAO($conn);
 
 if ($_SERVER['REQUEST_METHOD'] = 'POST' && isset($_POST['remove'])) {
     cookieProductRemove($_POST['remove']);
     $_SERVER['REQUEST_METHOD'] = 'GET';
     header('Location: cart.php');
     die();
+} else if ($_SERVER['REQUEST_METHOD'] = 'POST' && isset($_POST['ship'])) {
+    if (!isset($_COOKIE['email'])) {
+        header('Location: connection.php');
+        die();
+    } else {
+        foreach(json_decode($_COOKIE['product'], true) as $product) {
+            $stock = $productDAO->getColumnFromProduct($product['sku'], 'stock');
+            if ($product['quantity'] > intval($stock)) {
+                $_POST['errors'][] = $product['name'] . ' demandé (' . $product['quantity'] . '), mais stock insuffisant (' . $stock . ').';
+            }
+        }
+        if (!isset($_POST['errors'])) {
+            $orderDAO->addOrder($userDAO->getUserIDByEmail($_COOKIE['email']));
+            $orderID = $orderDAO->getOrder($userDAO->getUserIDByEmail($_COOKIE['email']));
+            foreach(json_decode($_COOKIE['product'], true) as $product) {
+                $orderItemDAO->addOrderItem($orderID, $product['sku'], $product['quantity']);
+                $productDAO->updateInventory($product['sku'], $product['quantity']);
+            }
+            setcookie("product", "", time() - 3600);
+            header('Location: cart.php');
+            die();
+        }
+    }
 }
 ?>
 
@@ -52,6 +84,13 @@ if ($_SERVER['REQUEST_METHOD'] = 'POST' && isset($_POST['remove'])) {
     </nav>
 
     <main>
+        <?php if(isset($_POST['errors'])) :?>
+            <ul class="error-list">
+            <?php foreach($_POST['errors'] as $error) :?>
+                <li><?php echo $error;?></li>
+            <?php endforeach;?>
+            </ul>
+        <?php endif;?>
         <?php if (!isset($_COOKIE['product'])): ?>
             <section class="cart-empty">
                 <h2>Votre panier est vide.</h2>
@@ -82,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] = 'POST' && isset($_POST['remove'])) {
                 ?>
             </section>
             <form class="cart-checkout" method="post">
-                <button>Passer la commande</button>
+                <button name="ship" value="1">Passer la commande</button>
             </form>
         <?php endif; ?>
     </main>

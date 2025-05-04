@@ -16,6 +16,13 @@ class LogUserDAO {
         return $reponse->fetchAll();
     }
 
+    public function getUserIDByEmail($email) : int {
+        $reponse = $this->pdo->prepare('SELECT ID FROM users WHERE email = :email;');
+        $reponse->bindValue(':email', $email, PDO::PARAM_INT);
+        $reponse->execute();
+        return intval($reponse->fetchColumn());
+    }
+
     public function connect(LogUserDTO $user) : bool {
         $values = $this->get($user);
         foreach($values as $row) {
