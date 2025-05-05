@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 require_once __DIR__ . '/LogUserDTO.class.php';
+require_once "../class/ListException.class.php";
 
 class LogUserDTOTest extends TestCase {
     private const VALID_EMAIL = '2437527@csfoy.ca';
