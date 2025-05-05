@@ -1,15 +1,6 @@
 <?php
 //Charly Paradis
 
-//TN: Pour déboguer
-/*
-if (isset($_COOKIE['product'])) {
-    print_r(json_decode($_COOKIE['product'], true));
-}*/
-/*
-setcookie("product", "", time()-(60*60)); 
-*/
-
 include_once "src/database.php";
 include_once "functions.php";
 include_once "class/ListException.class.php";
